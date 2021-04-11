@@ -1,0 +1,30 @@
+- Mặc định useEffect sẽ chạy sau mỗi lần re-render.
+- dùng useEffect với callback function.
+- sử dụng khi ta muốn thực hiện 1 số side effect và các công việc bên ngoài component.
+
+    useEffect(()=> {
+        // This arrow function sẽ chạy mỗi khi component render.
+    })
+
+- Note : ta không thể đặt hooks trong 1 statment điều kiện.
+
+    if(value < 2) {
+        useEffect(()=> {
+            //do something
+        })
+    }
+    => đây là cách dùng sai.
+
+- Ta sẽ phải dùng điều kiện bên trong useEffect.
+- Ta có thể dùng bao nhiêu useEffect tùy thích.
+- callback function không thể là async function.
+********** Cleanup function 
+- Khi dùng useEffect để set addEventListner cho 1 element thì mỗi lần setValue thay đổi nó sẽ gọi lại hàm useEffect đồng thời gán lại addEventListner do đó sẽ tạo ra hàng loạt sự kiện event trên element.
+- Lúc này ta sẽ phải dùng cleanup function.
+- cleanup function là function sẽ được return bởi useEffect, ở lần đầu render component thì cleanup function sẽ không chạy, nhưng sau mỗi lần re-render thì cleanup function sẽ được gọi trước khi useEffect được gọi. 
+- Do đó trong cleanup function ta có thể xóa addEventListner đi.
+- Ở trường hợp này ta cũng có thể dùng second parameter bên dưới để chỉ set useEffect 1 lần. nhưng vẫn nên dùng cho cleanup function cho các trường hợp remove và add component again.
+********** Second parameter
+- useEffect(()=>{}, []) => second parameter sẽ là 1 array
+- parameter này nếu là 1 array rỗng sẽ làm useEffect chỉ chạy duy nhất 1 lần lúc khởi tạo render lần đầu.
+- Nếu useEffect(()=>{}, [value]) : nếu ta không để trống mà có 1 value vào thì nó sẽ chạy hàm useEffect mỗi lần value thay đổi hoặc update.

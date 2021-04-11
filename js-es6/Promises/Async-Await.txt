@@ -1,0 +1,126 @@
+**** Async functions :
+- Ta sẽ bắt đầu với async keywords
+- Nó có thể được đặt trước 1 function 
+
+	async function f() { return 1;}
+	
+- function với keywords async trước nó chỉ mang đến 1 ý nghĩa duy nhất là : 1 function sẽ luôn return về 1 promise. Các value khác được wrap trong 
+
+						1 resolved promise  1 cách tự động.
+
+	async function f() {
+	  return 1;
+	}
+
+	f().then(alert); // 1
+	
+- Hoặc ta cug có thể return về 1 promise 
+
+	async function f() {
+	  return Promise.resolve(1);
+	}
+
+	f().then(alert); // 1
+	
+**** AWAIT :
+- await sẽ chỉ được dùng trong async function.
+- Syntax :
+		
+		let value = await  promise;
+		
+- keyword await khiến JS chờ cho đến khi promise settles và return its result.
+- VD :
+
+		async function f() {
+
+		  let promise = new Promise((resolve, reject) => {
+			setTimeout(() => resolve("done!"), 1000)
+		  });
+
+		  let result = await promise; // wait until the promise resolves (*)
+
+		  alert(result); // "done!"
+		}
+
+		f();
+		
+- function execution sẽ dừng lại tại line (*) và tiếp tục khi promise settle, với result trở thành result của nó. Do đó đoạn code trên sẽ show 'done!' sau 1s.
+- await dù dừng function nhưng nó sẽ không ảnh hưởng đến cpu , js vẫn có thể làm các jobs khác.
+- Đây chỉ là cách thanh lịch hơn trong việc dùng promise.then.
+
+- NOTE: ta không thể dùng await trong regular functions. nếu dùng sẽ báo syntax error.
+
+- Ta có thể sử dụng như sau :
+
+		(async () => {
+		  let response = await fetch('/article/promise-chaining/user.json');
+		  let user = await response.json();
+		  ...
+		})();
+		
+- NOTE : await sẽ chấp nhận 'thenables';
+- như promise.then, await cho phép ta sử dụng thenable objects. VD :
+
+
+		class Thenable {
+		  constructor(num) {
+			this.num = num;
+		  }
+		  then(resolve, reject) {
+			alert(resolve);
+			// resolve with this.num*2 after 1000ms
+			setTimeout(() => resolve(this.num * 2), 1000); // (*)
+		  }
+		}
+
+		async function f() {
+		  // waits for 1 second, then result becomes 2
+		  let result = await new Thenable(1);
+		  alert(result);
+		}
+
+		f();
+
+- Để sử dụng với method ta chỉ cần đặt async trước nó.
+
+
+**** ERROR HANDLING.
+- Nếu await promise return về rejection nó sẽ throw error giống như có 1 throw statement tại line đó.
+
+	async function f() {
+	  await Promise.reject(new Error("Whoops!"));
+	}
+	
+	Tương đương với :
+	
+	async function f() {
+	  throw new Error("Whoops!");
+	}
+	
+	
+- Ta có thể dùng try...catch để bắt lỗi.
+
+	async function f() {
+
+	  try {
+		let response = await fetch('http://no-such-url');
+	  } catch(err) {
+		alert(err); // TypeError: failed to fetch
+	  }
+	}
+
+	f();
+
+
+- Nếu ta không có try...catch thì thì promise được tạo từ việc gọi async function f() sẽ trở thành rejected, ta có thể dùng catch để bắt nó.
+
+
+		sync function f() {
+		  let response = await fetch('http://no-such-url');
+		}
+
+		// f() becomes a rejected promise
+		f().catch(alert); // TypeError: failed to fetch // (*)
+		
+- Nếu ta cũng không có catch ở đây thì event unhandledrejection sẽ xảy ra.
+- Tùy trường hợp mà ta sẽ dùng async/await hoặc promise.then.catch

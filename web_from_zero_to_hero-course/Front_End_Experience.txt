@@ -1,0 +1,68 @@
+- Event onload sẽ chỉ chạy với window và window.body
+- inline chỉ có thể thêm ở bên trái và phải.
+- Event DOMContentLoaded : sẽ chỉ áp dụng với document
+- Với slide mũi tên : Phần tử wrapper phải có width xác định.
+- Khi clone và append 1 node mới vào wrapper, ta cần phải chú ý việc clone lại node đó và kiểm tra xem có null không tức có tồn tại việc clone ko.
+- Khi clone 1 node chứa trong 1 biến, nếu clone lại biến đó sẽ ko thành công do kiểu tham chiếu 
+- Nếu flex : 0 1 200px ko hoạt động thì có thể set width cho nó.
+- chọn phần tử cuối khi chọn class trong css : Xác định phần tử chung có cũng cha và áp dụng psudoclass.
+- http://troy.labs.daum.net/
+- Phân tích màu : https://material.io/ => resources => color tools 
+- Kiểm tra lại ko margin auto ở button
+- Do block sẽ chiếm hết khoảng không nên khi áp dụng margin auto sẽ chiếm hết khoảng không cần thiết. inline-block sẽ chỉ chiếm khoảng không cần thiết 
+	nên khi áp margin auto thì sẽ không đẩy ra hết space.
+- Tương tự như trên : khi áp text-align cho 1 phần tử, các phần tử con sẽ chịu tác động từ cha nên sẽ bị đẩy đi.
+- querySelector : chỉ chọn phần tử con : :scope elementCon
+- :scope : là điểm tham chiếu của element cho selector chọn mathes
+- element.matches(selectorString ) : Kiểm tra có phải là element có phù hợp với selectorString  không ?
+- Xem lại margin-inline hoặc margin-block
+- Khi dùng sự kiện resize chú ý rằng trên mobile khi scroll the height thay đổi cũng sẽ kích hoạt event.
+- Thẻ inline sẽ tự động thêm 1 khoảng nhỏ ở dưới
+- Tạo hiệu ứng trượt fade : ở css cho display block nhưng cho height = 0, ở js lấy scrollHeight để gán height khi hiện element
+- monitorEvents(window);
+Sass : Qui tắc 7-1 : 1 main và tối đa 7 file nhỏ trong 7 folder
+tên file có dấu _ ở đầu sẽ không biên dịch đc chỉ cần biên dịch file main : file main không chứa code css chỉ chứa đường dẫn đến các file con
+Mỗi dấu + là 1 folder
++ Base : 
+	reset, 
+	custome : gọi trực tiếp class thư viện đè hết code 
++ Helper : 
+	  các file dùng chung cho cả web
+	  variables
+	  mixin
+	  @extend
++ Component : 
+	      thành phần kích thước nhỏ nhưng dùng ở nhiều chỗ vd như button
+	      đường dẫn có các kiểu thiết kế khác nhau
+	      form khác nhau
++ Layout :
+	      file header
+	      file footer
+	      file carousel
++ Page : 
+	      mỗi trang sẽ là 1 file
+	      Home
+	      Admin
+
++ Vendor : 
+	    Chứa các code thư viện tạo folder cho mỗi thư viện
++ Theme :	
+	    có thể tách nhỏ thành các folder dành cho các thay đổi cho template theo từng dịp : cái nào đổi thì thêm vào
+	    Hallowen
+	    Text
+		
+		
+- lưu dạng text là dữ liệu
+- Thông tin là có thể định nghĩa cho người dùng hiểu
+- Nơi lưu trữ các tập tin được gọi là cơ sở dữ liệu
+- Chuyển thông tin thành các giao diện có ý nghĩa
+- Nơi lưu trữ dữ liệu là server
+
+
+
+- Mô hình MVC
+- Models là nơi chứa các prototype
+- Services tương tác với back end
+
+
+?v=<?= time(); ?>

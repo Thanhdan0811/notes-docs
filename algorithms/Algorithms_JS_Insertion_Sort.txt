@@ -1,0 +1,39 @@
+************************************** Insertion Sort *********************************************
+- Ta sẽ tách ra thành 2 array, array 1 sẽ bắt đầu từ 0 đến i hoặc từ i-1 đến 0, array 2 sẽ bắt đầu từ i=1 đến end.
+- tại mỗi phần tử đầu tiên của array 2 ta sẽ so sánh với phần tử đầu hoặc cuối của array 1 và đặt nó đúng vị trí.
+
+
+function insertionSort(arr){
+	var currentVal;
+    for(var i = 1; i < arr.length; i++){
+        currentVal = arr[i];
+        for(var j = i - 1; j >= 0 && arr[j] > currentVal; j--) {
+            arr[j+1] = arr[j]
+        }
+//	OR
+//	for(var j = i - 1; j >= 0 ; j--) {
+//	   if(arr[j] > currentVal)
+//            arr[j+1] = arr[j]
+//        }
+        arr[j+1] = currentVal;
+    }
+    return arr;
+}
+
+insertionSort([2,1,9,76,4])
+
+****************************************************************************************************
+    function insertionSort(array) {
+        for(let i = 1; i < array.length; i++) {
+            for(let j = 0; j < i; j++) {
+                if(array[i] < array[j]) {
+                    let temp = array[i];
+                    array[i] = array[j];
+                    array[j] = temp;
+                }
+            }
+        }
+        console.log(array);
+    }
+    let arr = [1,3,6,15,-1,9,5,4,7,4];
+    insertionSort(arr);

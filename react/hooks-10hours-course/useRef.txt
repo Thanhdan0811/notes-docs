@@ -1,0 +1,7 @@
+- useRef : hoạt động khá giống useState nhưng
+    + Nó sẽ không re-render lại component.
+    + được dùng thường xuyên để target đến DOM nodes/elements.
+- Tạo 1 useRef : const refContainer = useRef(null); 
+- nếu console.log ra ta sẽ thấy nó có dạng sau : {current: null};
+- Khi ta gán nó vào element như sau : <input type="text" ref={refContainer} /> hoặc bất cứ thẻ html nào. thì lúc này sau khi render thì current sẽ có giá trị là thẻ input hoặc là thẻ html tương ứng.
+- Do không re-render nên ta có thể kết hợp với useEffect.

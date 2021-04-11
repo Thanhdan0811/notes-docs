@@ -1,0 +1,183 @@
+- Big-O notation : 
+
+- Big O Notation of Object : ta lưu trữ ko cần thứ tự. có thể truy cập, chèn, xóa 1 cách nhanh chóng.
+	+ Insertion : O(1);
+	+ Removal   : O(1);
+	+ Searching : O(N);
+	+ Access    : O(1);
+- Các methods liên quan Object : 
+	+ Object.keys : O(N);
+	+ Object.values : O(N);
+	+ Object.entries : O(N);
+	+ hasOwnProperty : O(1);
+
+- Big O Notation of Array : cần có thứ tự, cần truy cập, chèn và xóa nhanh.
+	+ Searching : O(N)
+	+ Access    : O(1)
+	+ Insertion : depends
+	+ Removal   : depends
+
+_ Big O Notation of Array's method : 
+	+ push : O(1) : add item
+	+ pop  : O(1) : remove item
+	+ shift   : O(N) : add from begin
+	+ unshift : O(N) : remove from begin
+	+ concat  : O(N) :
+	+ slice   : O(N) :
+	+ splice  : O(N) :
+	+ sort    : O(N*logN) :
+	+ forEach/map/filter/reduce/etc : O(N) :
+- understand the problem :
+	+ trình bày lại vấn đề theo cách của mình
+	+ xác định input đầu vào của vấn đề
+	+ xác định output sẽ ra của problem
+	+ outputs có thể được xác định từ inputs ko 
+	+ đánh dấu các mảnh dữ liệu quan trọng trong vấn đề.
+- Đưa ra 1 số ví dụ cụ thể 
+	+ các ví dụ dễ trước, rồi đến phức tạp như thay đổi input thì sẽ như thế nào, thử với các input như empty, ko đúng giá trị.
+- chia nhỏ vấn đề : xác định các steps và viết nó ra.
+- 
+
+********************************** 
+
+- Anagram : là 1 từ, cụm từ hay tên được định dạng bằng cách sắp xếp lại các ký tự : VD : aaz == zaa
+
+	function validAnagram(first, second) {
+	  if (first.length !== second.length) {
+	    return false;
+	  }
+
+	  const lookup = {};
+
+	  for (let i = 0; i < first.length; i++) {
+	    let letter = first[i];
+	    // if letter exists, increment, otherwise set to 1
+	    lookup[letter] ? lookup[letter] += 1 : lookup[letter] = 1;
+	  }
+	  console.log(lookup)
+
+	  for (let i = 0; i < second.length; i++) {
+	    let letter = second[i];
+	    // can't find letter or letter is zero then it's not an anagram
+	    if (!lookup[letter]) {
+	      return false;
+	    } else {
+	      lookup[letter] -= 1;
+	    }
+	  }
+
+	  return true;
+	}
+
+	// {a: 0, n: 0, g: 0, r: 0, m: 0,s:1}
+	validAnagram('anagrams', 'nagaramm')
+
+***** Frequency Counter Pattern : Sử dụng object để đếm số lần xuất hiện hay tần suất xuất hiện của đồi tượng trong bài toán.
+
+- x = x || 0 + 1 :  Nhớ lại các giá trị falsy.
+
+***** Multiple pointers pattern : Tạo pointers hoặc value dựa vào index, position, và di chuyển từ điểm bắt đầu, hoặc cuối hoặc ở giữa dựa vào điều kiện nhất định.
+
+- 
+	function countUniqueValues(arr){
+	    if(arr.length === 0) return 0;
+	    var i = 0;
+	    for(var j = 1; j < arr.length; j++){
+	        if(arr[i] !== arr[j]){
+	            i++;
+	            arr[i] = arr[j]
+	        }
+	    }
+	    return i + 1;
+	}
+	countUniqueValues([1,2,2,5,7,7,99])
+
+***** Sliding window tạo 1 cửa sổ có thể là array hoặc số từ vị trí này đến vị trí khác và dịch chuyển nó theo đk xác định.
+
+	function maxSubarraySum(arr, num){
+	  let maxSum = 0;
+	  let tempSum = 0;
+	  if (arr.length < num) return null;
+	  for (let i = 0; i < num; i++) {
+	    maxSum += arr[i];
+	  }
+	  tempSum = maxSum;
+	  for (let i = num; i < arr.length; i++) {
+	    tempSum = tempSum - arr[i - num] + arr[i];
+	    maxSum = Math.max(maxSum, tempSum);
+	  }
+	  return maxSum;
+	}
+
+	maxSubarraySum([2,6,9,2,1,8,5,6,3],3)
+
+***** Divide và Conquer : nhận 1 dữ liệu lớn và chia nhỏ nó ra, sau đó xác định điều kiện để đi đến vị trí tiếp theo.
+
+***** Recursion /rɪˈkɜːrʒn/ : Hay đệ qui gồm 2 yếu tố : gọi lại chính hàm đó nhưng với input khác đi và điều kiện dừng hay còn gọi là base case.
+
+	function sumRange(num) {
+		if(num === 1) return 1;
+		return num + sumRange(num - 1);
+	}
+	Mỗi lần gọi lại hàm và khi gặp điều kiện base case, call stack sẽ pop up từ từ, lúc này num sẽ có các giá trị cũ.
+
+***** Call Stack : Khi gọi hàm và trong hàm đó lại gọi hàm khác thì sẽ có 1 stack gọi là call stack, 
+	stack này sẽ chứa từng hàm được gọi và loại bỏ nó khi hàm đó đã thực hiện xong.
+	Khi có return thì sẽ trở về hàm trước đó chứ ko thoát khỏi toàn bộ hàm, tưc là chỉ bỏ đi 1 hàm trong stack
+	Ex : như 1 sấp giấy trên bàn, gọi hàm A thì A được đặt lên bàn đầu tiên, sau đó trong hàm A có gọi hàm B. 
+	Hàm B lúc này sẽ được đặt lên trên A. Khi B thực hiện xong thì sẽ bị loại bỏ khỏi bàn chỉ còn lại A.
+
+
+********************************************* SEARCHING *******************************************
+
+- Linear Searching : Là các tìm kiếm thông thường, ta tạo 1 vòng lặp qua tất cả các phần tử của mảng hay gì đó và chọn ra cái thỏa mãn điều kiện, big O là O(n).
+
+- Binary Searching : Binary sẽ chỉ hoạt động với  array đã được sorted theo số hay theo alphabet giải thuật sẽ như sau :
+	+ khi array đã được sort, ta dự đoán hay lấy giá trị giữa của array để xét điều kiện ta gọi đây là A, kiếm tra xem nó lớn hơn hay nhỏ hơn điều kiện. Nếu nhỏ hơn điều kiện,
+	  ta sẽ lại lấy giá trị ở giữa vùng từ A đến hết phần array lớn hơn nó, và tiếp tục cho đến khi gặp đúng điều kiện cần có.
+	
+	function binarySearch(arr, num) {
+	    console.log("length : ", arr.length)
+	    let right = arr.length - 1;
+	    let left = 0;
+	    let temp = 0;
+	    while(1) {
+	        if( right === left ) {
+	            temp = left;
+	            return arr[temp] == num ? temp : -1 ;
+	        }
+	        else {       
+	            temp = Math.floor((right + left) / 2);
+	            if( arr[temp] == num ) 
+	                return temp
+	            else if( arr[temp] < num ) {
+	                left = ++temp;
+	            }
+	            else 
+	                right = --temp;
+	        }
+	    }
+	}
+	let arr = [1,2,4,5,6,8,9,10,12,14,15,16,17,18,21,22,24,25,27,29,30,31,32,35,36,37,38,39,40,41,42,43,44,45,46,47];
+	let num = 26;
+	binarySearch(arr, num)
+Hoặc
+	function binarySearch(arr, elem) {
+	    var start = 0;
+	    var end = arr.length - 1;
+	    var middle = Math.floor((start + end) / 2);
+	    while(arr[middle] !== elem && start <= end) {
+	        if(elem < arr[middle]){
+	            end = middle - 1;
+	        } else {
+	            start = middle + 1;
+	        }
+	        middle = Math.floor((start + end) / 2);
+	    }
+	    if(arr[middle] === elem){
+	        return middle;
+	    }
+	    return -1;
+	}
+
+

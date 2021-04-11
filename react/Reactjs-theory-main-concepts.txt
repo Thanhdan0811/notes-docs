@@ -1,0 +1,480 @@
+***************************** JSX *************************************
+- JSX cũng là 1 expression : Sau khi compilation, jsx expression sẽ trở thành hàm js thông thường và evaluate vào js object.
+- jsx do đó có thể dùng trong lệnh if hoặc được return về.
+- Do jsx gần Js hơn Html, nên react dùng camelCase để đặt tên property name. class -> className, tabindex => tabIndex
+- Jsx ngăn chặn Injection Attacks 
+- JSX đại diện cho object : 2 ví dụ sau là tương tự nhau (are identical):
+- Babel compiles JSX xuống thành việc gọi React.createElement() 
+	vd1 :
+
+	const element = (
+  		<h1 className="greeting">
+    			Hello, world!
+ 		 </h1>
+	);
+
+	vd 2 :
+
+	const element = React.createElement(
+  		'h1',
+  		{className: 'greeting'},
+  		Hello, world!'
+	);
+
+- Nó sẽ thực hiện như sau : đây là cấu trúc :
+	
+	const element = {
+  		type: 'h1',
+  		props: {
+    			className: 'greeting',
+   			 children: 'Hello, world!'
+  		}
+	};
+- Object này được gọi là React Elements, ta có thể xem nó như là những mô tả của những nội dung mà ta muốn nó hiển thị lên screen.
+- React sẽ đọc object này và dùng nó để construct the DOM và cập nhật 
+
+
+***************************** Rendering Elements *************************************
+
+
+- Quote : "Elements are the smallest building blocks of React apps";
+- VD : const element = <h1>Hello, world</h1>;
+- React elements là 1 object đơn giản và cũng dễ tạo.
+- React DOM sẽ phụ trách việc updating DOM để phù hợp với React elements.
+- Elements là cái mà Components được "made of";
+
+** Rendering an Element into DOM 
+- <div id='root'></div> : Ta gọi đây là "root" DOM vì mọi thứ bên trong đều được quản lý bởi React DOM.
+- Nếu ta tích hợp React và 1 app có sẵn thì sẽ có thể có nhiều 'root' hơn.
+- Để render React elements vào root DOM node, ta sẽ dùng ReactDOM.render() :
+
+	const element = <h1>Hello, world</h1>;
+	ReactDOM.render(element, document.getElementById('root'));
+
+** Updating the rendered Element
+- React elements là immutable(bất biến), một khi ta đã tạo 1 element thì sẽ không thể thay đổi children của nó hay cũng như là các attributes của chính nó.
+- Tới bây h, cách duy nhất ta biết để update UI là tạo 1 element mới và pass vào ReactDOM.render(); xem xét vd sau :
+	
+	function tick() {
+  		const element = (
+    			<div>
+      				<h1>Hello, world!</h1>
+      				<h2>It is {new Date().toLocaleTimeString()}.</h2>
+    			</div>
+  		);
+  		ReactDOM.render(element, document.getElementById('root'));
+	}
+
+	setInterval(tick, 1000);
+
+- Nó sẽ gọi ReactDOM.render() mỗi giây 1 lần.
+
+** React only updates What's Necessary.
+- React DOM compares the element and its children với cái trước đó(the previous one) và chỉ applies the DOM updates necessary.
+- Ở ví dụ trên, khi chạy ta sẽ thấy là text trong h2 sẽ được ghi đè hay load lại sau mỗi giây chứ ko phải cả div.
+
+
+***************************** COMPONENTS AND PROPS *************************************
+
+
+- Components cho phép ta split UI thành các pieces độc lập và có thể tái sử dụng và xem mỗi piece là 1 phần tách biệt.
+
+** Function and class component.
+- Cách đơn giản nhất để định nghĩa 1 component là viết JS function.
+	
+	function Welcome(props) {
+  		return <h1>Hello, {props.name}</h1>;
+	}
+
+- Đây là 1 React Component vì nó chấp nhận 1 single argument 'props' (properties) object cùng với data và return 1 React Element.
+- Ta gọi đây là function components vì nó đơn giản là js function.
+- Ngoài ra ta có thể dùng es6 class để tạo component.
+
+	class Welcome extends React.Component {
+  		render() {
+    			return <h1>Hello, {this.props.name}</h1>;
+  		}
+	}
+
+- 2 cách tạo component trên là như nhau.
+
+** Rendering a Component
+- Ở trên ta chỉ mới đề cập đén React elements biểu diễn DOM tags : const element = <div />;
+- Tuy nhiên, elements elements còn có thể biểu diễn user-defined components : const element = <Welcome name="Sara" />;
+- Khi React gặp user-defined components, nó sẽ passes JSX attributes và children cho component này như là 1 single object,  TA GỌI OBJECT NÀY LÀ 'PROPS';
+- Tức là nó sẽ truyền các children và attribute(name: 'Sara') của component này vào object là 'props';
+
+	function Welcome(props) {
+  		return <h1>Hello, {props.name}</h1>;
+	}
+
+	const element = <Welcome name="Sara" />;
+
+	ReactDOM.render(
+ 		element,
+  		document.getElementById('root')
+	);
+
+- Các bước sẽ như sau : 
+	+ Ta gọi ReactDOM.render() với <Welcome name='Sara' /> element.
+	+ React gọi Welcome component với {name: 'Sara'} như là 1 object props.
+	+ Welcome component sẽ return về <h1>Hello, Sara</h1> element như là 1 kết quả.
+	+ React DOM update The DOM to match <h1>Hello, Sara</h1>
+- NOTE : luôn đặt tên component với capital letter.
+
+** Composing Components
+- Components có thể tham chiếu đến component khác thông qua output của nó. Vd :
+
+	function Welcome(props) {
+  		return <h1>Hello, {props.name}</h1>;
+	}
+
+	function App() {
+ 		return (
+    			<div>
+      				<Welcome name="Sara" />
+      				<Welcome name="Cahal" />
+      				<Welcome name="Edite" />
+    			</div>
+  		);
+	}
+
+	ReactDOM.render(
+  		<App />,
+  		document.getElementById('root')
+	);
+
+** Extracting Components 
+- Quote : 'Don’t be afraid to split components into smaller components.'
+- https://reactjs.org/docs/components-and-props.html#extracting-components : đọc thêm cách tách các component trong bài viết.
+
+** Props are read-only 
+- Dù ta có tạo component bằng function or class thì cũng sẽ ko bao giờ có thể modify props của chính nó.
+- pure function là hàm không có khả năng thay đổi input và sẽ trả về cùng 1 out với cùng inp
+- impure function là hàm có khả năng thay đổi input 
+- React có 1 luật là :
+
+	All React components must act like pure functions with respect to their props.
+
+- Các component phải act như pure function đối với props.
+
+
+***************************** State and Lifecycle *************************************
+
+
+- Ở các ví dụ trước, ta chỉ mới biết cách update UI là ReactDOM.render() để thay đổi rendered output.
+
+	function Clock(props) {
+  		return (
+    			<div>
+      				<h1>Hello, world!</h1>
+      				<h2>It is {props.date.toLocaleTimeString()}.</h2>
+    			</div>
+  		);
+	}
+
+	ReactDOM.render(
+  		<Clock />,
+  		document.getElementById('root')
+	);
+
+- Ta sẽ muốn viết thành component như trên.
+- Để thực hiện ta sẽ cần add 'state' vào Clock component
+- State giống như props nhưng nó private và được toàn quyển control bởi component.
+
+** Converting a Function to a Class
+- Để convert function thành class ta làm như sau :
+	+ Tạo ES6 class với cùng tên và extends React.Component.
+	+ Thêm 1 empty method được gọi là render().
+	+ Move body của function vào render() method.
+	+ Replace props thành this.props trong body render().
+	+ Xóa function declaration đi.
+
+	class Clock extends React.Component {
+  		render() {
+    			return (
+      				<div>
+        				<h1>Hello, world!</h1>
+        				<h2>It is {this.props.date.toLocaleTimeString()}.</h2>
+      				</div>
+    			);
+  		}
+	}
+
+- Render() method sẽ được gọi mỗi khi update xảy ra: quote :
+
+	'but as long as we render <Clock /> into the same DOM node, only a single instance of the Clock class will be used. 
+	 This lets us use additional features such as local state and lifecycle methods.'
+
+** Adding Local State to a class
+_ Thay props bằng state
+
+	class Clock extends React.Component {
+		constructor(props) {
+			super(props);
+			this.state = {date: new Date()};
+		}
+
+		render() {
+			return (
+				<div>
+					<h1>Hello, world!</h1>
+					<h2>It is {this.state.date.toLocaleTimeString()}.</h2>
+				</div>
+			);
+		}
+	}
+
+- NOTE : trong constructor ta gọi super(props): class components nên luôn gọi constructor với props.
+
+** Adding lifecycle methods to a class
+- trong các ứng dụng với nhiều components, một vấn đề rất quan trọng là free up resources khi components bị destroyed.
+- Ta muốn setup a timer bất kể khi nào Clock được render to DOM ở lần đầu tiên, đây được gọi là "mounting" trong React.
+- Ta cũng muốn clear timer đó khi bất cứ khi nào DOM được tạo bởi Clock được removed, đây được gọi là "unmounting" trong React.
+- Ta có thể declare special methods vào component class để chạy 1 số code khi 1 component mounts và unmounts.
+- Các methods này được gọi là lifecycle methods:
+
+	class Clock extends React.Component {
+		constructor(props) {
+			super(props);
+			this.state = {date: new Date()};
+		}
+		// lifecycle methods
+		componentDidMount() {
+		}
+		// lifecycle methods
+		componentWillUnmount() {
+		}
+
+		render() {
+			return (
+			<div>
+				<h1>Hello, world!</h1>
+				<h2>It is {this.state.date.toLocaleTimeString()}.</h2>
+			</div>
+			);
+		}
+	}
+
+- componentDidMount() method : sẽ chạy sau khi component output đã được rendered to DOM. 
+- componentWillUnmount() method : sẽ được gọi khi 1 component bị removed khỏi DOM.
+- NOTE : vì this.props và this.state có thể được update bất đồng bộ (asynchronously), ta không nên dựa vào giá trị của chúng để tính toán next state.
+
+	// Wrong
+	this.setState({
+		counter: this.state.counter + this.props.increment,
+	});
+
+- Để fix, ta dùng second form của sertState() đó là nhận 1 function thay vì object
+- function này sẽ nhận previous state như là first argument và the props tại thời điểm việc update được áp dụng như là second argument.
+
+	// Correct
+	this.setState((state, props) => ({
+		counter: state.counter + props.increment
+	}));
+
+	// Correct với regular function
+	this.setState(function(state, props) {
+		return {
+			counter: state.counter + props.increment
+		};
+	});
+
+** State updates are merged :
+- Khi gọi setState(), React sẽ merges object mà ta provide vào current state. tức là khi dùng setState thì nó sẽ ghi đè state đã được định sẵn.
+** The Data Flows Down
+- cả parent và child component đều không thể biết được component là stateful or stateless.
+- Và cả 2 cũng không nên quan tâm chúng là function hoặc class.
+- Đây là lý do vì sao state được gọi là local hoặc encapsulated(đóng gói), state sẽ không thể được access bởi bất cứ component nào khác ngoài cái sở hữu và set nó.'
+
+***************************** HANDLING EVENTS *************************************
+- Sự kiện trong React sẽ khác như sau : 
+	+ React event được đặt tên sử dụng camelCase
+	+ Với JSX ta sẽ pass 1 function như là 1 event handle thay vì string.
+- Để prevent default trong react ta phải dùng preventDefault explicitly thay vì return false trực tiếp trong tag.
+
+	function ActionLink() {
+		function handleClick(e) {
+			e.preventDefault();
+			console.log('The link was clicked.');
+		}
+	}
+
+- e : ở đây được gọi là synthetic event. React event sẽ không giống hoàn toàn với native events. Ta sẽ xem xét ở chương SyntheticEvent.
+- Các cách để định danh this :
+	+ sử dụng hàm bind(); this.handleClick = this.handleClick.bind(this); định nghĩa trong constructor	
+	+ dùng arrow function 
+	+ Hoặc cũng dùng arrow function : <button onClick={() => this.handleClick()}> : cách này sẽ tạo ra 1 callback khác nhau mỗi khi component được khởi tạo.
+
+
+***************************** CONDITIONAL RENDERING *************************************
+- Trong react ta có thể tạo các component riêng biệt để chứa các behavior riêng biệt.
+- Sau đó ta có thể render 1 trong số chúng phụ thuộc vào state của app.
+
+	function Greeting(props) {
+	  const isLoggedIn = props.isLoggedIn;
+	  if (isLoggedIn) {
+		return <UserGreeting />;
+	  }
+	  return <GuestGreeting />;
+	}
+	
+- Ở đây tùy vào điều kiện mà sẽ render component nào.
+** Element Variables
+- Ta có thể dùng variables để chứa elements
+- Áp dụng các điều kiện
+
+	return (
+		<div>
+		  The user is <b>{isLoggedIn ? 'currently' : 'not'}</b> logged in.
+		</div>
+	  );
+	  
+- Để ngăn component render ta có thể dùng return;
+
+
+***************************** LISTS AND KEYS *************************************
+** Rendering multiple components
+- ta có thể xây dựng colllection các element và gọi nó trong JSX sử dụng {}.
+- Khi tạo lists các components sẽ cần có key.
+- Key là 1 special attribute ta cần phải thêm vào khi tạo 1 list elements hay components.
+- Key sẽ giúp React xác định được items nào sẽ thay đổi, hay được add hoặc removed.
+- Key nên là duy nhất giữa các siblings nhưng có thể giống đối với các component khác.
+
+
+***************************** FORMS - REACT *************************************
+- form HTML thông thường cũng hoạt động bình thường trong React, nhưng thông thường nên có function JS để handle submission và truy cập data từ người dùng.
+- Cách để thực hiện điều này được gọi là kỹ thuật : controlled components.
+
+** Controlled Components 
+- trong HTML, form element như input, textarea, select thông thường sẽ maintain state của nó và update nó dựa vào user input.
+- Trong React, mutable state được giữ trong state property của components và chỉ có thể update bởi setState().
+- Ta có thể kết hợp 2 cách trên để tạo React state thành "single source of truth".
+- Sau đó component render form có thể controls chuyện gì xảy ra với form khi user nhập.
+- input form được controlled bởi React theo cách này được gọi là "controlled component".
+
+		class NameForm extends React.Component {
+		  constructor(props) {
+			super(props);
+			this.state = {value: ''};
+
+			this.handleChange = this.handleChange.bind(this);
+			this.handleSubmit = this.handleSubmit.bind(this);
+		  }
+
+		  handleChange(event) {
+			this.setState({value: event.target.value});
+		  }
+
+		  handleSubmit(event) {
+			alert('A name was submitted: ' + this.state.value);
+			event.preventDefault();
+		  }
+
+		  render() {
+			return (
+			  <form onSubmit={this.handleSubmit}> // Event handle submit
+				<label>
+				  Name:
+				  <input type="text" value={this.state.value} onChange={this.handleChange} /> // event input.
+				</label>
+				<input type="submit" value="Submit" />
+			  </form>
+			);
+		  }
+		}
+
+		
+*** THE TEXTAREA TAG
+- Trong HTML, <textarea> element định nghĩa text là children của nó.
+	
+	<textarea>
+		Hello there, this is some text in a text area
+	</textarea>
+
+- Trong react, <textarea> sẽ dùng value attribute. 
+	
+		 <textarea value={this.state.value} onChange={this.handleChange} />
+
+- this.state.value sẽ được khởi tạo trong constructor 
+
+
+*** THE SELECT TAG
+- trong HTML, <select> tạo 1 drop-down list. sẽ có các option và sử dụng selected attribute để đánh dấu giá trị mặc định.
+- Trong React, thay vì sử dụng selected attribute sẽ dùng value attribute ở select tag như vậy sẽ tiện hơn.
+
+		class FlavorForm extends React.Component {
+		  constructor(props) {
+			super(props);
+			this.state = {value: 'coconut'};
+
+			this.handleChange = this.handleChange.bind(this);
+			this.handleSubmit = this.handleSubmit.bind(this);
+		  }
+
+		  handleChange(event) {
+			this.setState({value: event.target.value});
+		  }
+
+		  handleSubmit(event) {
+			alert('Your favorite flavor is: ' + this.state.value);
+			event.preventDefault();
+		  }
+
+		  render() {
+			return (
+			  <form onSubmit={this.handleSubmit}>
+				<label>
+				  Pick your favorite flavor:
+				  <select value={this.state.value} onChange={this.handleChange}>
+					<option value="grapefruit">Grapefruit</option>
+					<option value="lime">Lime</option>
+					<option value="coconut">Coconut</option>
+					<option value="mango">Mango</option>
+				  </select>
+				</label>
+				<input type="submit" value="Submit" />
+			  </form>
+			);
+		  }
+		}
+		
+- Từ đó ta thấy <input type="text">, <textarea>, <select> sẽ work khá giống nhau, chúng chấp nhận value attribute.
+- NOTE : ta có thể pass array vào value attribute  cho phép select nhiều options trong 1 select tag.
+
+
+*** THE FILE INPUT TAG.
+- Trong HTML, <input type="file"> cho phép user chọn 1 hoặc nhiều file để uploaded.
+- Vì value của nó là read-only nên nó là uncontrolled component trong React
+
+
+*** HANDLING MULTIPLE INPUTS
+- Đọc tiếp trên trang
+
+
+***************************** LIFTING STATE UP *************************************
+- Tức là state ở parent và truyền xuống component children.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

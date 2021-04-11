@@ -1,0 +1,154 @@
+- Một trong những qui tắc quan trọng của oop là phân định hay tách giao diện bên trong và bên ngoài.
+- Giống như 1 thiết bị điện bên trong rất phức tạp nhưng giao diện bên ngoài lại rất dể dùng.
+- Nếu ta loại bỏ lớp vỏ hay giao diện bên ngoài của thiết bị thì sẽ rất khó sử dụng và nguy hiểm.
+- Programming object cũng tương tự như vậy. Nhưng thay vì lớp vỏ bên ngoài như thiết bị ta sẽ dùng special syntax và các qui ước.
+
+** Internal and external interface.
+- Trong oop , properties và methods được chia thành 2 nhóm :
+
+	+ Internal interface : methods và properties được accessible từ method khác của class nhưng không phải từ bên ngoài.
+	+ External interface : method và properties được accessible từ bên ngoài của class.
+	
+- Từ đó cái mà chúng ta cần dùng ở object là external interface của nó, chúng ta không cần phải biết internal của nó như thế nào.
+
+- Trong JS có 2 loại object field (properties và methods) :
+
+	+ Public : accessible từ bất cứ đâu, đây được xem là external interface đây là loại ta hay dùng.
+	+ Private : accessible chỉ bên trong class, đây được xem là internal interface.
+	
+- Không như các ngôn ngữ oop khác trong js không có protected field,
+
+*** Protected 'waterAmount'
+
+	class CoffeeMachine {
+	  waterAmount = 0; // the amount of water inside
+
+	  constructor(power) {
+		this.power = power;
+		alert( `Created a coffee-machine, power: ${power}` );
+	  }
+
+	}
+
+	// create the coffee machine
+	let coffeeMachine = new CoffeeMachine(100);
+
+	// add water
+	coffeeMachine.waterAmount = 200;
+	
+- Lúc này properties waterAmount và power là public, ta có thể dễ dàng get/set chúng từ bên ngoài object thanh bất cứ value nào.
+- Ta sẽ thay đổi waterAmount thành protected.
+
+- Protected properties thường có tiền tố trước nó là 1 underscore '_'.
+- Đây là qui ước chứ không phải bắt buộc. các properties và methods sẽ không thể truy cập từ bên ngoài.
+
+
+- Do đó property sẽ là _waterAmount.
+
+			class CoffeeMachine {
+			  _waterAmount = 0;
+
+			  set waterAmount(value) {
+				if (value < 0) {
+				  value = 0;
+				}
+				this._waterAmount = value;
+			  }
+
+			  get waterAmount() {
+				return this._waterAmount;
+			  }
+
+			  constructor(power) {
+				this._power = power;
+			  }
+
+			}
+
+			// create the coffee machine
+			let coffeeMachine = new CoffeeMachine(100);
+
+			// add water
+			coffeeMachine.waterAmount = -10; // Error: Negative water
+			
+- khi gọi coffeeMachine.waterAmount nó sẽ không gọi _waterAmount mà sẽ gọi get/set waterAmount. kiểm tra và set giá trị cho _waterAmount.
+
+** Read-only power.
+
+- Với power ta sẽ chỉ muốn nó là read-only, chỉ set 1 lần và không được thay đổi.
+
+			class CoffeeMachine {
+			  // ...
+
+			  constructor(power) {
+				this._power = power;
+			  }
+
+			  get power() {
+				return this._power;
+			  }
+
+			}
+
+			// create the coffee machine
+			let coffeeMachine = new CoffeeMachine(100);
+
+			alert(`Power is: ${coffeeMachine.power}W`); // Power is: 100W
+
+			coffeeMachine.power = 25; // Error (no setter)
+			
+- Ở đây ta không viết hàm set nên sẽ không thể set được cho power.
+
+NOTE: protected field vẫn sẽ được kế thừa. Nếu ta viết class A extends CoffeeMachine thì sẽ không có cơ chế nào giúp ta ngăn chặn việc accessing this._waterAmount hoặc this._power từ class A.
+
+
+
+
+*** Private '#waterAmount';
+- Có 1 cách ở mức độ ngôn ngữ thay vì như qui ước ở trên để private properties và methods.
+- Đó là private nên bắt đầu với '#'. Từ đó chúng sẽ chỉ được accessible bên trong class.
+
+	class CoffeeMachine {
+	  #waterLimit = 200;
+
+	  #fixWaterAmount(value) {
+		if (value < 0) return 0;
+		if (value > this.#waterLimit) return this.#waterLimit;
+	  }
+
+	  setWaterAmount(value) {
+		this.#waterLimit = this.#fixWaterAmount(value);
+	  }
+
+	}
+
+	let coffeeMachine = new CoffeeMachine();
+
+	// can't access privates from outside of the class
+	coffeeMachine.#fixWaterAmount(123); // Error
+	coffeeMachine.#waterLimit = 1000; // Error
+	
+- Ở đoạn code trên, #waterAmount sẽ không gây xung đột với waterAmount nếu có.
+
+
+class CoffeeMachine {
+
+  #waterAmount = 0;
+
+  get waterAmount() {
+    return this.#waterAmount;
+  }
+
+  set waterAmount(value) {
+    if (value < 0) value = 0;
+    this.#waterAmount = value;
+  }
+}
+
+let machine = new CoffeeMachine();
+
+machine.waterAmount = 100;
+alert(machine.#waterAmount); // Error
+
+- Không giống như protected, private sẽ được ép  bởi ngôn ngữ. và nó cũng sẽ không cho phép kế thừa.
+- private field sẽ không khả dụng với this[name] : this['#name'] sẽ không thực hiện được.

@@ -1,0 +1,42 @@
+-Tricks căng center:
+	box-child {
+		width: 200px;
+		height: 200px;
+		position: absolute;
+		top:0;
+		left:0;
+		bottom:0;
+		right:0;
+		margin: auto;
+	}
+	Nếu ko có width và height thì nó sẽ kéo dãn box cho vừa parent, 1 trick để điều chỉnh width height.
+- Sử dụng css :  :target và :checked
+
+- Nav sử dụng label và input checkbox
+	.nav-label {
+            display: block;
+            width: 2rem;
+            height: 2rem;
+            position: relative;
+            left: 50px;
+            /* background-color: cornflowerblue; */
+        }
+        .nav-label::after {
+            content: '';
+            display: block;
+            width: 2rem;
+            height: 0.5rem;
+            position: absolute;
+            background: coral;
+            box-shadow: 0 0.7rem 0 coral,0 1.4rem 0 coral;
+        }
+	<input type="checkbox" name="" id="nav" class="nav">
+        <label for="nav" class="nav-label"></label>
+
+- Để tạo CSS variables ta có var(--var, giá trị trả về khi có lỗi)
+
+- kích thước của các heading : h1 32px, h2 24px, h3 18.72px, h4 16px, h5 13.28px, h6 10.72px.
+- Complementary colors : là 2 màu nếu kết hợp sẽ tạo ra màu grey, 2 màu này sẽ opposite khi trong bánh xe màu (the color wheel)
+- figure và figcaption sẽ wrap img, chart.
+- audio cần có controls attribute. trong audio có thẻ đơn source có src và type attribute
+- Khi dùng input radio có thể bao lại các radio bằng fieldset và thẻ legend là mô tả.

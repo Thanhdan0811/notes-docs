@@ -1,0 +1,27 @@
+- View file : view all file and folder
+	dir
+- help dir : show tất cả các options cho lệnh dir
+- dir /OD : sort theo thứ tự date xem thêm ở help dir.
+
+
+- Navigation and create file or folder
+- Tạo folder : mkdir ten_folder : với tên folder có khoảng cách thì ta sẽ dùng dấu '' hoặc "" để bọc nó lại;
+- remove directory : rmdir /S ten_folder xóa folder và các file của nó do dùng /S.
+- Để remove directory ở 1 nơi khác ta sẽ dùng như sau :  mkdir 'đường dần đến dir đó';
+- Từ đây ta cũng có thể áp dụng cho các command khác khi ở thư mục khác nhau,
+
+
+- Move file : move ten_file ten_folder
+- copy file : copy ten_file ten_folder/ten_file_mới
+- Rename file : ren ten_file_cu ten_file_mới
+- delete file : del ten_file : không thể dùng cho xóa folder.
+
+
+**** Mở một application
+- internal command : echo something
+- direct invocation : copy link đường dẫn đến app và cd đến đó, gõ tên app và khởi chạy
+	Hoặc có thể từ desktop gõ tên shortcut cho app chạy
+- start command : start "" "link dẫn đến app" : chú ý phải có "" đầu tiên để cho location spaces
+
+*** Environment variables
+- set biến cho cmd : set ten_bien = "tên-thông-tin or tên đường dẫn";

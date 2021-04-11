@@ -1,0 +1,114 @@
+- Promise chaining sẽ có dạng như sau :
+
+	new Promise(function(resolve, reject) {
+
+	  setTimeout(() => resolve(1), 1000); // (*)
+
+	}).then(function(result) { // (**)
+
+	  alert(result); // 1
+	  return result * 2;
+
+	}).then(function(result) { // (***)
+
+	  alert(result); // 2
+	  return result * 2;
+
+	}).then(function(result) {
+
+	  alert(result); // 4
+	  return result * 2;
+
+	});
+	
+- Ý tưởng là result sẽ được truyền qua các chain của .then handlers.
+- flow sẽ như sau :
+	+ (*) promise sẽ resolve trong 1s
+	+ (**) sau đó .then handler sẽ được gọi.
+	+ (***) value mà nó return về sẽ được passed đến next .then handler 
+
+- Tất cả hoạt động là do promise.then sẽ return về 1 promise, do đó ta có thể gọi .then handler sau đó. 
+- Khi 1 handler return về 1 value nó sẽ trở thành result của promise sau đó .then sẽ được gọi với nó.
+
+
+NOTE : nếu ta gọi .then liên tiếp trên các dòng khác nhau thì đây không phải là chaning mà là song song.
+
+
+
+
+*** Returning promises :
+- Ta có thể tạo và trả về 1 promise trong .then(handler)
+
+	new Promise(function(resolve, reject) {
+
+	  setTimeout(() => resolve(1), 1000);
+
+	}).then(function(result) {
+
+	  alert(result); // 1
+
+	  return new Promise((resolve, reject) => { // (*)
+		setTimeout(() => resolve(result * 2), 1000);
+	  });
+
+	}).then(function(result) { // (**)
+
+	  alert(result); // 2
+
+	  return new Promise((resolve, reject) => {
+		setTimeout(() => resolve(result * 2), 1000);
+	  });
+
+	}).then(function(result) {
+
+	  alert(result); // 4
+
+	});
+	
+	
+- (*) sẽ trả về 1 new Promise() sau 1s nó sẽ pass result đến .then thứ 2. Tương tự như vậy ở (**).
+- Nên kết quả sẽ là 1->2->4 nhưng ở đây nó sẽ delay 1s giữa các alert.
+- Từ đây ta có thể tạo chains các bất đồng bộ actions.
+
+
+** Thenables :
+- Về bản chất, handler có thể trả về ko chính xác là 1 promise mà còn được gọi là 'thenable' object. 1 object bất kỳ trong đó có method .then. Nó sẽ đối xử như 1 promise.
+
+		class Thenable {
+		  constructor(num) {
+			this.num = num;
+		  }
+		  then(resolve, reject) {
+			alert(resolve); 								// function() { native code }
+															// resolve with this.num*2 after the 1 second
+			setTimeout(() => resolve(this.num * 2), 1000);  // (**)
+		  }
+		}
+
+		new Promise(resolve => resolve(1))
+		  .then(result => {
+			return new Thenable(result); // (*)
+		  })
+		  .then(alert); // shows 2 after 1000ms
+		  
+
+- JS check object được trả về ở (*) nếu nó có 1 method được gọi là then, Sau đó
+nó sẽ gọi method đó cung cấp native function resolve, reject như arguments và đợi cho đến khi one trong 2 được gọi.
+
+
+	let Thenable = {
+	 num: 2,
+	 then(resolve, reject) {
+		alert(resolve); // function() { native code }
+		// resolve with this.num*2 after the 1 second
+		setTimeout(() => resolve(this.num * 2), 1000); // (**)
+	  }
+	}
+
+	new Promise(resolve => resolve(1))
+	  .then(result => {
+		return Thenable; // (*)
+	  })
+	  .then(alert); 
+	  
+- Vẫn chạy.

@@ -1,0 +1,50 @@
+ctrl + r : bật tắt ruler
+************* Thanh công cụ ***************
+- Ấn Phím như L, C... để chọn công cụ và giữ shift + phím L,C.. để chọn các lựa chọn khác trong công cụ.
+- Ấn D sẽ reset màu foreground và background hoặc click vào icon nhỏ nhỏ ở forground/backgroud
+- Ấn X để đảo foreground và background hoặc click vào icon switch nhỏ nhỏ
+- Thay đổi phím tắt : edit => Keyboard shortcuts 
+- edit -> Menus... : thay đổi các lựa chọn trên menu
+- window -> workspace -> new workspace : để lưu lại các chỉnh sửa về phím tắt, setup panel. sử dụng cho các mục đích cụ thể
+******************** File ************************
+- Tạo mới file : click Create new hoặc file -> new hoặc ctrl + n.
+- Trong cửa sổ tạo mới file : sẽ có tùy chọn Artboards thường sẽ sử dụng cho web hoặc mobile
+- Trong cửa sổ tạo mới file : Resolution(độ phân giải) mặc định để pixels/Inch : Chuẩn cho màn hình là 72, in ấn là 300
+- Trong cửa sổ tạo mới file : Color Mode RGB color thường dùng cho hiển thị mà hình hoặc rửa ảnh lab , CMYK thường dùng cho in ấn. Chủ yếu chọn rgb và 8 bit
+- Trong cửa sổ tạo mới file : Background color chọn màu background khi tạo
+- Mở file : ctrl + O, kéo thả ảnh vào phần tab hoặc vào task bar của window
+- Thêm file : file => place embedded (nếu có thay đổi hình thì trong photoshop sẽ không thay đổi) 
+		 hoặc place linked (nếu có thay đổi hình thì trong photoshop cux sẽ thay đổi)
+********************* File : Lưu và chia sẻ *****************
+- file -> save hoặc save as.... : file mặc định sẽ là psd.
+- file -> export :
+	+ Save for web : chọn định dạng(jpeg, png, wbmp)
+	+ quick export as png : tụ chọn luôn
+	+ export as : ctrl + alt + shift + w : Có thêm tính năng là tạo thêm ảnh theo tỷ lệ 2x, 3x...
+	+ export layer to file : chọn các layer hiển thị.
+- Có thể chọn click phải vào 1 layer và chọn export as.
+- File -> generate -> assest
+- File -> revert : đưa về trạng thái lưu gần nhất
+********************* Raster, Vector *************
+- Raster(thường dùng cho photoshop) : những hình ảnh được xử lý bởi điểm ảnh, mỗi 1 điểm ảnh mang 1 màu khác nhau. Khi thu nhỏ phóng to sẽ bị vỡ ảnh
+- Raster : sẽ phụ thuộc vào độ phân giải và số điểm ảnh có trong file. càng lớn càng sẽ đẹp nhưng sẽ nặng
+- Raster : Độ thay đổi màu giữa các điểm ảnh sẽ mịn
+- Vector (Thường ở Adobe illustrator) : được tạo bới các điểm riêng lẻ r nối lại với nhau tạo thành ảnh. Khi thu nhỏ phóng to sẽ ko bị vỡ ảnh. ko phụ thuộc điểm ảnh
+- Vector : bất kỳ kích thước nào thì dung lượng cũng sẽ rất nhẹ.
+- Vector : Độ thay đổi màu sẽ không bằng hầu như chỉ là 1 màu duy nhất
+- Chuyển từ vector về raster : click phải vào layer và chọn Rasterize layer rất dễ, Nhưng ngược lại sẽ tùy trường hợp mà nó sẽ đơn giản hay phức tạp.
+- Những cái vè thường sẽ là vector.
+- Logo nên dùng vector.
+- Công cụ gõ chữ trong cc cũng sẽ là ở vector. Nếu chuyển qua raster thì sẽ ko thể chỉnh sửa đc.
+********************* Bit Depth 8bit, 16bit.. *****************
+- Qui định thông số giá trị màu có trong 1 điểm ảnh : càng nhiều bit trong 1 điểm ảnh thì sẽ càng đẹp
+- 8 bit : chứa 256 giá trị màu từ đen 0 sang trắng 255 sẽ có 256 cấp độ. rgb sẽ là 16 triệu màu do 256*256*256.
+
+
+- ctrl + alt + z : quay lại nhiều bước
+- slice => file => save for web => save all user slice
+- 
+
+
+
+

@@ -1,0 +1,17 @@
+- Use state ta phải import vào : {useState} from 'react';
+- Khi chạy hàm useState() sẽ trả về array có dạng [undefined, f]
+	+ f sẽ điều khiển(control) state value lúc này là undefined
+	+ state value có thể là bất cứ value nào. : useState('hello dev'); có thể truyền vào variable
+	+ khi console.log ra sẽ hiện ta 2 lần ???/ => do strict mode ở index.js nên chạy hai lần
+	
+- Luật cơ bản của hook:
+	+ sử dụng từ use.
+	+ Component phải là uppercase
+	+ phải nằm trong function/component body
+	+ Không thể dùng useState() trong điều kiện.
+
+- const [text, setText] = useState() => text sẽ là value , setText sẽ là hàm thay đổi value
+- ex : const [text, setText] = useState('hello'); => text === 'hello'; setText('world') => text sẽ đổi thành 'world';
+
+- NOTE : chú ý ta không thể đặt hooks trong các statment điều kiện.
+	

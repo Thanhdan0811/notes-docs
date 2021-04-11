@@ -1,0 +1,10 @@
+- npm init : Tạo file package.json , list dependencies.
+- npm install <package name> --save : install package locally and save in package.json.
+- npm install <package name> -g : install package globally access anywhere.
+- npm install <package name> --save-dev : use only in development.
+
+- rafce : function component arrow
+- rafc : functon regular component.
+
+- react js public site : truy c?p trang netify sau ?? ch?n site, sau ?? k?o th? th? m?c build c?a react 
+- ?? t?o th? m?c build ta g? l?nh : npm run build.

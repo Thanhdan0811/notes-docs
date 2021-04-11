@@ -1,0 +1,68 @@
+Multiple page application : mỗi 1 page là 1 trang HTML
+Reacjs là Single page application : chỉ có 1 trang HTML theo kiến trúc component.
+- Có 2 loại component : 
+	+ component lớn(mức độ trang) là cả 1 trang web như trang chủ, liên hệ.
+	+ component nhỏ(thành phần) sẽ được gán vào các component trang web. 
+- Chỉ load 1 lần duy nhất và ko bị reload lại.
+- hiệu suất tốt
+- npmjs.com
+- Thư viện creat-react-app thư viện react js
+- lệnh create-react-app tên-du-an : tải về tất cả thư viện cần thiết của react
+- Thư mục node_modules : tất cả thư mục node js.
+- Thư mục public : chứa file html duy nhất 
+- file .gitignore sẽ loại bỏ các file ko mún public lên.
+- package.json chứa các thông tin phiên bản thư viện, tên dự án
+- folder src : chứa tất cả component sẽ tạo ra.
+
+- Lệnh npm start sẽ tìm file package.json
+- đổi tên thì phải có thêm run : npm run dev
+- index.htnl -> index.js -> App.js
+- Giao diện đầu tiên sẽ đến từ app.js
+- Chạy vào file index.js
+	+ ReactDOM.render() lấy toàn bộ trong <App /> đổ vào div có id là root
+- Khi chạy file css sẽ lấy tất cả render ra 1 lần
+
+ npm start
+    Starts the development server.
+
+  npm run build
+    Bundles the app into static files for production.
+
+  npm test
+    Starts the test runner.
+
+  npm run eject
+    Removes this tool and copies build dependencies, configuration files
+    and scripts into the app directory. If you do this, you can’t go back!
+
+We suggest that you begin by typing:
+
+  cd fe55-reactjs
+  npm start 
+
+
+
+************************ Câu lệnh *********************
+- npm install -g create-react-app  : 
+- create-react-app tên-project : Tạo project với các thư viện đầy đủ
+- npx create-react-app my-app : Tạo project với các tool có phiên bản từ 5.2+ trở lên. 
+
+************************ Cấu trúc và ý nghĩa các thành phần ***********
+- Package.json :
+	- Object "dependencies" : "react-script" sẽ làm các công việc như webpack, tạo bundle....
+	- Chứa thông tin các thư viện và phiên bản
+- Để cập nhật phiên bản , thay đổi phiên bản trong file package.json và chạy lệnh npm install  
+** File index.js : 
+- Hai dòng import React và ReactDOM.
+- import React : có thể xem là 'view' library là core package thực hiện DOM manipulation cho dev 
+- Nhưng vì react có thể thực hiện hay hiển thị trên web, mobile...
+- nên ReactDOM sẽ được dùng cho websites, ReactNative sẽ cho mobile  
+- Import React ở mỗi file js để nhận biết file jsx 
+
+** STATE
+- props để đưa dữ liệu xuống node con : <Node name={data} /> => props.name to get data
+- props không bao giờ thay đổi.
+- state cơ bản là 1 object mô tả app của ta, có thể thay đổi.
+
+
+- Bản chất của react và redux đều là immutable

@@ -1,0 +1,37 @@
+- Cũng tương tự như flex,  grid cũng cần có container và các item
+- display :grid;
+- grid-template-columns : value value value;  sẽ tạo các columns có width là value.
+- grid-template-rows : như trên.
+- Đơn vị :
+	+ units : dành cho row
+	+ px, rem, em, %, auto, fr : auto và fr được dùng để responsive
+	+ fr : fraction of available space
+- nếu là grid 3x3 thì sẽ có 4 line columns, 4 line rows
+- grid-gap : khoảng cách : grid-row-gap : grid-column-gap : khoảng cách giữa các hàng và cột.
+- grid-column-start | end và grid-row-start | end : bắt đầu và kết thúc theo line. 
+- grid-column | row : value-1/value-2 ; shortcut của cái trên.  
+ + grid-column : 1 / 3; column sẽ bắt đầu tại line column 1 đến line column 3 , tức là 2 column. 
+ + grid-column : 1/-1; sẽ kéo dãn ra hết có thể.
+
+
+- grid-template-areas: "a a b"
+		       "a a b"
+		       "c c b"
+	+ .cell-1 {grid-area: a;} sẽ được chiếm vùng như trong areas, số cột, hàng trùng với khai báo trong template-rows | columns
+- grid-area: horizontal line to start at / vertical line to start at / horizontal line to end at / vertical line to end at;
+- item1 { grid-area: 1/1/2/4; }
+
+
+- order : value : có thể thiết lập trihf tự cho các items
+- repeate function : repeat(số lần lặp, giá trị cần lặp)
+- có thể dùng justify-conten, align-content như flex nhưng khi có giá trị fr thì sẽ ko áp dụng đc do nó chiếm full khoảng trống còn lại.
+- align-items; justify-items : chỉnh các items trong grid
+- align-self; justify-self : stretch |center|start|end: chỉnh các nội dung trong items 1 cách riêng lẻ, sẽ phải xét cho từng item.
+- minmax(giá rị min, giá trị max) : grid-template-columns: 100px minmax(50px, 200px); 2 column.
+- có 2 giá trị là auto-fill và auto-fit : 
+	+ auto-fill : giữ kích thước và tạo thêm column, 1 hàng sẽ có bao nhiêu và còn dư sẽ tạo thêm column. ko kéo dãn hết container đường line sẽ mở hết khả năng.
+	+ auto-fit : sẽ chỉ tạo vừa đủ, nó có bao nhiêu items sẽ tạo bao nhiêu, và sẽ kéo dãn cho vừa đủ container. đường line sẽ ko mở rộng
+	+ grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); 
+- explicit : rõ rãng, 
+- implicit : ngầm, ẩn tàng
+- analogous : tương tự

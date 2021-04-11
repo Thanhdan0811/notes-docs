@@ -1,0 +1,53 @@
+- Class : có sự khác nhau giữa constructor function kế thừa từ 1 class hay còn gọi là derived function và những function khác.
+- derived function có 1 internal property là [[ConstructorKind]]:'derived' là 1 special internal label.
+	
+	+ Khi function thường gặp new keyword nó tạo ra 1 object và assign vào this.
+	+ khi derived function gặp new nó sẽ yêu cầu parent constructor thực hiện điều này.
+	
+- Do đó derived function sẽ phải gọi super.
+
+- ngoài method ta còn có thể override class fields. : Parent constructor luôn dùng field value của riêng nó. không phải override.
+- Với method khi parent constructor được gọi nó sẽ dùng override method. nhưng với class field thì không.
+- Điều này là do class field sẽ được khởi tạo khi :
+	+ Before constructor for the base class.
+	+ immediately after super() for derived class.
+	
+- Do đó nếu không khai báo constructor trong children sẽ gọi constructor từ cha , do chưa có class field nên children sẽ dùng class field từ cha ngay sau khi gọi super sẽ tạo class field của children.
+
+*** Super: internal, [[HomeObject]]
+
+- Về cách hoạt động của super : nếu ta gọi super.method() thì engine sẽ cần lấy method từ prototype của current object
+- Js thêm 1 special internal property cho function đó là [[HomeObject]], khi 1 function được định nghĩa như là 1 class hoặc object method thì [[HomeObject]] property sẽ trở thành object đó. Sau đó super sẽ dùng nó để resolve parent prototype và method.
+- [[HomeObject]] sẽ chỉ được thực hiện với super.
+- [[HomeObject]] được định nghĩa cho methods trong cả class và plains object. Nhưng đối với object methods phải được định nghĩa là method() không phải 'method: function()'.
+- VD 
+
+	let animal = {
+	  sayHi() {
+		alert(`I'm an animal`);
+	  }
+	};
+
+	// rabbit inherits from animal
+	let rabbit = {
+	  __proto__: animal,
+	  sayHi() {
+		super.sayHi();
+	  }
+	};
+
+	let plant = {
+	  sayHi() {
+		alert("I'm a plant");
+	  }
+	};
+
+	// tree inherits from plant
+	let tree = {
+	  __proto__: plant,
+	  sayHi: rabbit.sayHi // (*)
+	};
+
+	tree.sayHi();  // I'm an animal (?!?)
+	
+- 

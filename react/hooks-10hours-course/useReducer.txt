@@ -1,0 +1,2 @@
+- Khi dùng useReducer ta sẽ nhận lại 1 array chứa 2 giá trị là : state và function dispatch.
+- const [state,dispatch] = useReducer(reducer); 

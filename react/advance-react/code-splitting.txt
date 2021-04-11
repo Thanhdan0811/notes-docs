@@ -1,0 +1,24 @@
+- Code-splitting là 1 tính năng được hỗ trợ bởi Webpack, Rollup và Browserify, có thể tạo ra nhiều bundles có thể được load động tại thời điểm chạy.
+- Code-splitting cho phép ta "lazy-load" các thứ chỉ cần tại thời điểm nhất định bới user.
+- Các cách thực hiện trong react như sau :
+
+
+- import():
++ import("./math").then(math => {
+	console.log(math.add(16,26));
+})
+
+
+- React.lazy (không hỗ trợ ở server side).
++ React.lazy cho phép ta render dynamic import như là 1 regular component.
++ Cú pháp thông thường : import tenComponent from "path"
++ Cú pháp mới : const otherComponent = React.lazy(()=> import('path'));
++ Lúc này nó sẽ tự load bundle chứa otherComponent khi component này lần đầu tiên được render.
++ React.lazy nhận 1 function mà buộc phải gọi dynamic import() và sẽ phải trả về 1 React Component.
++ The lazy component nên được render bên trong Suspense component , component sẽ cho phép ta show nội dung fallback  như ...loading trong khi chờ lazy component load.
+			<Suspense fallback={<div>Loading...</div>}>
+				<OtherComponent />
+			  </Suspense>
+			  
++ fallback prop chấp nhận bất cứ React Component nào mà ta truyền vào.
++ Hiện tại React.lazy chỉ hỗ trợ default exports, để sử dụng với nhiều exports ta có thể dùng cách reexports.

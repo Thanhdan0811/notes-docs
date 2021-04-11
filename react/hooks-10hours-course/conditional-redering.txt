@@ -1,0 +1,2 @@
+- Ta có thể dùng điều kiện để return về component mong muốn.
+- fetch nếu dùng catch sẽ không bắt được error url sai. ta sẽ phải dùng status code trong .then

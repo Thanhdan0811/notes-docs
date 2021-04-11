@@ -1,0 +1,45 @@
+************************************** Bubble Sort *********************************************
+
+- Giải thuật là sẽ lặp từ đầu hoặc từ cuối của array, khi đó sẽ so sánh 2 phần từ kề nhau, phần tử nào lớn hơn thì sẽ swap qua phải cho đến cuối array.
+- Tức là số lớn nhất sẽ ở cuối sau 1 vòng lặp, ta tiếp tục lặp cho tất cả các phân tử còn lại
+- VD :
+********************************************************************************************************************************************************
+function bubbleSort(arr) {
+  for (let i = 0; i < arr.length; i++) {
+    for (let j = 0; j < arr.length - i - 1; j++) {
+      // do là j và j+1 nên j sẽ chạy đến arr.length -1 , sau đó số lớn nhất sẽ về cuối, nên t phải trừ đi i
+      console.log("object", arr, arr[j], arr[j + 1]);
+      if (arr[j] > arr[j + 1]) {
+        (function (arr_1, index_1, index_2) {
+          [arr[index_1], arr[index_2]] = [arr_1[index_2], arr_1[index_1]];
+        })(arr, j, j + 1);
+      }
+    }
+    console.log("xong 1 lần");
+  }
+  return arr;
+}
+arr = [7, 5, 1, 6, 3, 7, 2, 6, 1];
+bubbleSort(arr);
+****************************************************************************
+// Optimized BubbleSort with noSwaps
+function bubbleSort(arr){
+    var noSwaps;
+    for(var i = arr.length; i > 0; i--){
+      noSwaps = true;
+      for(var j = 0; j < i - 1; j++){
+        if(arr[j] > arr[j+1]){
+          var temp = arr[j];
+          arr[j] = arr[j+1];
+          arr[j+1] = temp;
+          noSwaps = false;         
+        }
+      }
+      if(noSwaps) break;
+    }
+    return arr;
+  }
+  bubbleSort([8,1,2,3,4,5,6,7]);
+********************************************************************************************************************************************************
+
+Với bubble ta sẽ swap liên tục để đưa giá trị max xuống cuối

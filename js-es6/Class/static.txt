@@ -1,0 +1,103 @@
+- Ta có thể assign method vào class function itself không phải vào 'prototype', những method này được gọi là static.
+- trong class ta có thể dùng từ khóa static,
+
+	class User {
+	  static staticMethod() {
+		alert(this === User);
+	  }
+	}
+
+	User.staticMethod(); // true
+
+- Ta có thể trực tiếp gán vào function class.
+- Thông thường static method sẽ được dùng để thực hiện các chức năng thuộc về class thay vì 1 object cụ thể.
+
+	class Article {
+	  constructor(title, date) {
+		this.title = title;
+		this.date = date;
+	  }
+
+	  static createTodays() {
+		// remember, this = Article
+		return new this("Today's digest", new Date());
+	  }
+	}
+
+	let article = Article.createTodays();
+
+	alert( article.title ); // Today's digest
+	
+- Từ đây ta có thể tạo today date mỗi khi cần thông qua class static method.
+
+
+
+
+
+
+- Static property cũng có thể được áp dụng, cũng dùng từ khóa static và nó như là 1 property của class.
+
+	class Article {
+	  static publisher = "Ilya Kantor";
+	}
+
+	alert( Article.publisher ); // Ilya Kantor
+
+- STATIC PROPERTIES VÀ METHODS ĐỀU ĐƯỢC KẾ THỪA.
+
+	class Animal {
+	  static planet = "Earth";
+
+	  constructor(name, speed) {
+		this.speed = speed;
+		this.name = name;
+	  }
+
+	  run(speed = 0) {
+		this.speed += speed;
+		alert(`${this.name} runs with speed ${this.speed}.`);
+	  }
+
+	  static compare(animalA, animalB) {
+		return animalA.speed - animalB.speed;
+	  }
+
+	}
+
+	// Inherit from Animal
+	class Rabbit extends Animal {
+	  hide() {
+		alert(`${this.name} hides!`);
+	  }
+	}
+
+	let rabbits = [
+	  new Rabbit("White Rabbit", 10),
+	  new Rabbit("Black Rabbit", 5)
+	];
+
+	rabbits.sort(Rabbit.compare);
+
+	rabbits[0].run(); // Black Rabbit runs with speed 5.
+
+	alert(Rabbit.planet); // Earth
+	
+
+
+- Khi ta gọi Rabbit.compare thì nó sẽ gọi kế thừa Animal.compare.
+- Lúc này là do extends sẽ làm Rabbit [[property]] đến Animal.
+
+Từ đó Rabbit extends Animal sẽ tạo ra 2 [[Prototype]] là :
+
+	+ Rabbit function inherit từ Animal function
+	+ Rabbit.prototype inherit from Animal.prototype.
+
+*****************
+class Animal {}
+class Rabbit extends Animal {}
+
+// for statics
+alert(Rabbit.__proto__ === Animal); // true
+
+// for regular methods
+alert(Rabbit.prototype.__proto__ === Animal.prototype); // true

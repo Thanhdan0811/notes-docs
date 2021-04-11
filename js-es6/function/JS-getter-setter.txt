@@ -1,0 +1,76 @@
+- Có 2 loại property trong object là data và accessor property
+- accessor property là các hàm thực hiện việc setting/getting value.
+- getter và setter :
+
+	let obj = {
+	  get propName() {
+	    // getter, the code executed on getting obj.propName
+	  },
+
+	  set propName(value) {
+	    // setter, the code executed on setting obj.propName = value
+	  }
+	};
+
+	let user = {
+	  name: "John",
+	  surname: "Smith",
+
+	  get fullName() {
+	    return `${this.name} ${this.surname}`;
+	  }
+	};
+
+	alert(user.fullName); // John Smith
+
+- The getter works when obj.propName is read, the setter – when it is assigned.
+- Ở đây sẽ khác method ở chỗ là không có dấu ().
+
+	let user = {
+	  name: "John",
+	  surname: "Smith",
+
+	  get fullName() {
+	    return `${this.name} ${this.surname}`;
+	  },
+	
+	  set fullName(value) {
+	    [this.name, this.surname] = value.split(" ");
+	  }
+	};
+
+	// set fullName is executed with the given value.
+	user.fullName = "Alice Cooper";
+
+	alert(user.name); // Alice
+	alert(user.surname); // Cooper
+
+**** Accessor descriptors
+
+- Với getter/setter thì sẽ không có flag value và flag writable thay vào đó là hàm get và set
+	+ get – a function without arguments, that works when a property is read,
+	+ set – a function with one argument, that is called when the property is set,
+	+ enumerable – same as for data properties,
+	+ configurable – same as for data properties.
+- Khi đó ta có thể dùng get và set bên trong defineProperty 
+- Property bắt đầu với _name nên chỉ được access bên trong code nội , bên ngoài ko nên dùng.
+
+	let user = {
+	  get name() {
+	    return this._name;
+	  },
+
+	  set name(value) {
+	    if (value.length < 4) {
+	      alert("Name is too short, need at least 4 characters");
+	      return;
+	    }
+	    this._name = value;
+	  }
+	};
+
+	user.name = "Pete";
+	alert(user.name); // Pete
+
+	user.name = ""; // Name is too short...
+

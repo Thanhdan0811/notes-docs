@@ -1,0 +1,47 @@
+- Promise chaining hợp lý cho việc error handling, 
+- Khi 1 promise rejects, the control sẽ nhảy đến rejection handler gần nhất.
+- .catch có thể không cần phải ở ngay dưới promise.
+- Trong chain ta nên để .catch ở dưới cùng, để khi có lỗi nó sẽ nhảy đến catch.
+
+*** Implicit try..catch 
+- code của promise excutor and promise handler có 1 'invisible' try...catch xung quanh nó.
+- Nếu 1 exception xảy ra, nó sẽ bị bắt và được xem như là 1 rejection.
+
+		new Promise((resolve, reject) => {
+		  throw new Error("Whoops!");
+		}).catch(alert); // Error: Whoops!
+		
+		Tương tự như sau :
+		
+		new Promise((resolve, reject) => {
+		  reject(new Error("Whoops!"));
+		}).catch(alert); // Error: Whoops!
+		
+- The 'invisible' try...catch sẽ bắt error và chuyển nó thành rejected.
+- Không chỉ xảy ra trong excutor mà còn ở handlers.
+- Nếu ta throw error bên trong .then điều đó đồng nghĩa với việc là rejected promise , so control nhảy đến error handler gần nhất.
+
+
+	new Promise((resolve, reject) => {
+	  resolve("ok");
+	}).then((result) => {
+	  blabla(); // no such function
+	}).catch(alert); // ReferenceError: blabla is not defined
+	
+- Nếu ngay sau lỗi là catch và catch xử lý nó hay finish nó thì .then phía ngay sau sẽ được khởi chạy.
+
+
+	// the execution: catch -> then
+	new Promise((resolve, reject) => {
+
+	  throw new Error("Whoops!");
+
+	}).catch(function(error) {
+
+	  alert("The error is handled, continue normally"); => catch finish normally.
+
+	}).then(() => alert("Next successful handler runs"));
+	
+- Nếu xảy ra lỗi nhưng ta lại không có catch thì sẽ dừng chương trình và báo lỗi.
+- Trong browser sẽ có 1 event để bắt lỗi này là : unhandledrejection;
+- Nó sẽ bắt các lỗi mà các lỗi này ko được bắt bởi try...catch.

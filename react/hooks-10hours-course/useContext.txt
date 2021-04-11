@@ -1,0 +1,10 @@
+- add useContext từ 'react';
+- khai báo : const PersonContext = React.createContext();
+- Sẽ có 2 component ở đây là : Provider và Consumer  trong PersonContext.
+- Sau đó ở component chính , return sẽ có dạng :
+
+        <PersonContext.Provider value='hello'>
+                //Component con 
+        </PersonContext.Provider>
+
+- Ở component con : const value = useContext(PersonContext);

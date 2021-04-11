@@ -1,0 +1,48 @@
+**************** func.call(context, arg1, arg2,...) ****************
+******
+function sayHi() {
+  alert(this.name);
+}
+
+let user = { name: "John" };
+let admin = { name: "Admin" };
+
+// use call to pass different objects as "this"
+sayHi.call( user ); // John
+sayHi.call( admin ); // Admin
+*****
+
+**************** func.apply(context, args) ****************
+- Khác với func.call() args là 1 array-likes như là 1 list của arguments
+- ... spread với args có thể áp dụng với call()
+- apply() chỉ nhận array-like args
+- Nên khi cần iterable ta sẽ dùng call ngược lại array-like thì dùng apply
+- với object đều là iterable và array-like thì ta có thể dùng cả 2 nhưng dùng apply sẽ nhanh hơn do js tối ưu tốt hơn
+- parsing tất cả arguments cùng với context vào 1 hàm khác được gọi là call forwarding
+
+**************** func.bind(context) ****************
+		func.bind(context, [arg1], [arg2], ...);
+let user = {
+  firstName: "John"
+};
+
+function func(phrase) {
+  alert(phrase + ', ' + this.firstName);
+}
+
+// bind this to user
+let funcUser = func.bind(user);
+
+funcUser("Hello"); // Hello, John (argument "Hello" is passed, and this=user)
+
+************
+function mul(a, b) {
+  return a * b;
+}
+
+let triple = mul.bind(null, 3);
+
+alert( triple(3) ); // = mul(3, 3) = 9
+alert( triple(4) ); // = mul(3, 4) = 12
+alert( triple(5) ); // = mul(3, 5) = 15
+

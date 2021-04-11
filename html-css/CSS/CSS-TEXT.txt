@@ -1,0 +1,32 @@
+****** Overflow Wrap
+- Xử lý chữ tràn ra ngoài
+
+overflow-wrap : break-word;
+
+****** Hyphens
+- Thêm vào dấu - khi chữ dài không vừa với container , việc thêm dấu - sẽ tùy thuộc vào trình duyệt.
+
+hyphens: auto;
+
+****** TEXT TRUNCATION
+- Cắt chữ và thêm dấu 3 chấm vào phía sau
+
+white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
+
+****** Multiple line text truncation
+- Hiển thị text nhiều dòng sau đó có dấu 3 chấm,
+- Nếu có padding sẽ không hiển thị đúng
+
+display: -webkit-box;
+-webkit-line-clamp: 3;
+-webkit-box-orient: vertical;
+overflow: hidden;
+
+****** Horizontal Scrolling
+- Sử dụng overflow-x: auto;
+
+****** Nội dung ngắn
+- Nếu nội dung ngắn nhìn đôi khi không phù hợp thì ta có thể dùng min-width.
+- Khi dùng dấu ... với các nội dung là con của 1 flex item thì do min-width của flex item là bằng với nội dung nên sẽ không thực hiện được để làm được ta phải set cho min-width của item là 0 để áp dụng được.

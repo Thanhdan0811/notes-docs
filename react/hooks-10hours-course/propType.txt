@@ -1,0 +1,18 @@
+import PropTypes from 'prop-types';
+- cho phép ta kiểm tra prop có là undefined không.
+- phím tắt rafcp
+
+
+//  Sẽ thông báo cho ta biết lỗi nếu có bất cứ biến nào có value là khác mặc định được định nghĩa bên dưới.
+// phím tắt : name: ptar => name: PropTypes.array.isRequired
+Product.propTypes = {
+  image : PropTypes.object.isRequired,
+  name : PropTypes.string.isRequired,
+  price : PropTypes.number.isRequired,
+}
+// Set up default value cho prop nếu có lỗi.
+// Product.defaultProps = {
+//   name: 'default name',
+//   price: 3.99,
+//   image: {url : defaultImage} 
+// }

@@ -1,0 +1,115 @@
+- Các bước khi lập trình Web :
+	+ Thêm font-awesome để tạo các icon : gõ search font awesome cdn và thêm link :
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	+ Reset CSS : để đặt mặc định các cấu hình Element : gõ search reset css.
+		/* http://meyerweb.com/eric/tools/css/reset/ 
+		   v2.0 | 20110126
+		   License: none (public domain)
+		*/
+
+		html, body, div, span, applet, object, iframe,
+		h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+		a, abbr, acronym, address, big, cite, code,
+		del, dfn, em, img, ins, kbd, q, s, samp,
+		small, strike, strong, sub, sup, tt, var,
+		b, u, i, center,
+		dl, dt, dd, ol, ul, li,
+		fieldset, form, label, legend,
+		table, caption, tbody, tfoot, thead, tr, th, td,
+		article, aside, canvas, details, embed, 
+		figure, figcaption, footer, header, hgroup, 
+		menu, nav, output, ruby, section, summary,
+		time, mark, audio, video {
+			margin: 0;
+			padding: 0;
+			border: 0;
+			font-size: 100%;
+			font: inherit;
+			vertical-align: baseline;
+		}
+		/* HTML5 display-role reset for older browsers */
+		article, aside, details, figcaption, figure, 
+		footer, header, hgroup, menu, nav, section {
+			display: block;
+		}
+		body {
+			line-height: 1;
+		}
+		ol, ul {
+			list-style: none;
+		}
+		blockquote, q {
+			quotes: none;
+		}
+		blockquote:before, blockquote:after,
+		q:before, q:after {
+			content: '';
+			content: none;
+		}
+		table {
+			border-collapse: collapse;
+			border-spacing: 0;
+		}
+- Tạo Vendor để tương thích với các trình duyệt khác : search prefix free và tải về file sau đó add vào html.
+- Landing Page : là trang giới thiệu về 1 công ty hay tổ chức nào đó.
+- CSS power : 
+- CSS Units : px là đơn vị absolute hầu như ko phụ thuộc vào bất cứ thứ gì, cố định.
+- CSS Units : % là đơn vị theo đơn vị của parent. Parent ko đc set sẽ ko có gì cả.
+- CSS Units : em : theo browser thì 1em = 16px : hoặc 1 em bằng giá trị cơ sở giá trị này hoặc bằng browser(16px) hoặc bằng với parent.
+- CSS Units : rem : sẽ ko theo browser mà theo root, ở đây là document hay html, nếu html ko đc set thì sẽ mặc định theo browser.
+- CSS Units : vw và vh : theo screen. banner(ảnh bìa).
+- CSS Units : calc() cho phép tính các units như +, -, * và cần có khoảng cách ở giữa các toán tử như : calc(100vh - 100px)
+
+- CSS Outline : sẽ như border nhưng có thêm property là outline-offset chấp nhận cả giá trị dương và âm:
+- thẻ a có thể dùng margin, padding.
+- Để center theo chiều ngang : với inline ta có thể dùng text-align, với block ta dùng margin auto
+- inline có thể áp dụng padding cho cả 4 chiều, margin thì sẽ chỉ cho chiều ngang và dọc.
+- Ta nên để box-sizing: border-box.
+- opacity : 0, visibility : hidden sẽ ẩn đi element nhưng vãn chiếm khoảng trống. với visibility : collapse sẽ ẩn hàng hoặc cột nhưng không làm thay đổi bố cục table.
+- Background : url(""); mặc định sẽ có repeat.
+- background-repeat: no-repeat|repeat|repeat-x|repeat-x|space|round; giá trị round giống repeat nhưng sẽ ké ảnh cho vừa khoảng trống chứ ko cắt ảnh.
+- background-size: contain (phóng hoặc thu ảnh nhưng vẫn giữ tỷ lệ ảnh)| cover (ép ảnh cho vừa kích thước chứa)
+- background-position : center| bottom| left| right| top : là các giá trị theo name.
+- background-position : 0(x) 0(y) : là mặc định có thể dùng %.
+- background-attach : fixed; sẽ tạo hiệu ứng vi diệu :v
+- background: linear-gradient(valuedeg | name(to left | to right | to bottom(default) | to top), color, color....);
+- background: bg-color bg-image position/bg-size bg-repeat bg-origin bg-clip bg-attachment initial|inherit;
+- Tool for create gradient : https://www.colorzilla.com/gradient-editor/
+
+- Float, clear 
+
+- Position: absolute; sẽ đi theo element parent có position:relative; nếu ko sẽ theo body
+- position: fixed | sticky; sẽ đi theo browser window, document. ko đi theo parent
+
+- Media Queries : nên thiết kế theo di đọng trước. min-wdith : staring from; max-width : up to; 
+
+- Xử lý img : width: 100%; sẽ bằng kích thước parent. height sẽ dư 1 khoảng trống có thể sửa bằng cách cho img là display: block;
+- img sẽ ko có ::before hay ::after do img đã là 1 content. ta có thể dùng với div parent.
+- ::before | after; sẽ luôn cần phải có content:""; thì mới hoạt động.
+
+- Selectors :
+	+ children ko thể là descendant, descendant có thể là children.
+	+ Với class sẽ rõ ràng hơn nên đucợ ưu tiên hơn.
+	+ Link có các pseudo-class như : :link |:visited |:hover |:active
+	+ :root ; sẽ tạo các style và tạo các biến css, là html hay document của trang. có thể dùng để chỉnh sửa giá trị unit là rem. 
+
+- Transform: translateX(or Y)(20px | -20px | 50% ) ; translate(value X, value Y); (% sẽ theo kích thước của chính element)
+- Transform: scaleX(or Y)(2 | 0.5 | ); scale(value X, value Y);
+- Transform: rotateX(or Y or Z)(45deg | 180deg); rotate() == rotateZ(); X quay element theo trục X, Y quay elemnt theo trục Y, Z quay element theo trục Z.
+- Transform: skewX(or Y)(20deg | 90deg | -20deg); skew(1 value) == skewX() ;skew(value X, value Y); nghiêng element theo trục X hoặc Y.
+
+- Transition; transition-property: xác định property cần thay đổi; transition-duration: thời gian thay đổi;
+- Transition; transition-delay: ms or s; 
+- Transition; transition: transition-property transition-duration transition-delay, transition-property transition-duration transition-delay, ...;
+- Transition; transition: all transition-duration transition-delay; all chỉ tất cả các property
+- Transition; transition
+
+- Animation: animation-name aniamtion-duration animation-iteration-count *-fill-mode;
+
+- Variables CSS : có global và local cú pháp : --tenbien ; cách dùng : var(--tenbien) sẽ áp dụng cho các child.
+- background-attachment: fixed; thường ko áp dụng cho iphone;
+
+- Các kích thước màn hình 576px, 768px, 992px, 1170px.
+
+- .class1, .class2, .class3  Sau đó nếu ta thay đổi như sau .addClass .class1 thì khi ta dùng js add class .addClass thì sẽ ra 1 hiệu ứng khác.
+

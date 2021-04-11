@@ -1,0 +1,10 @@
+
+
+
+
+
+
+
+- method shouldComponentUpdate() {} : sẽ chạy sau method componentWillReceiveProps và sẽ return về true hoặc false, nếu return về false sẽ không thực hiện việc render component, return true thì sẽ thực hiện việc render lại component.
+- Tại method shouldComponentUpdate ta có thể set điều kiện để render lại. method này nhận vào tham số là nextProps , là props mới chuẩn bị được cập nhật.
+- Để thay thế cách kiểm tra bằng shouldComponentUpdate, ta có thể dùng PureComponent và cho extends từ PureComponent. Nhưng ở đây có 1 chú ý là PureComponent sẽ thực hiện check nông.

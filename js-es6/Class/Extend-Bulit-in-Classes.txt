@@ -1,0 +1,49 @@
+- Built-in classes như array, Map có thể được extends.
+
+	class PowerArray extends Array {
+	  isEmpty() {
+		return this.length === 0;
+	  }
+	}
+
+	let arr = new PowerArray(1, 2, 5, 10, 50);
+	alert(arr.isEmpty()); // false
+
+	let filteredArr = arr.filter(item => item >= 10);
+	alert(filteredArr); // 10, 50
+	alert(filteredArr.isEmpty()); // false
+
+- NOTE : các built-in methods như filter, map sẽ trả về new object của type là PowerArray, việc thực hiện sẽ gọi object's constructor để thực hiện.
+- arr.constructor === PowerArray : true;
+
+- Khi gọi arr.filter() : bên trong sẽ tạo array kết quả sử dụng arr.constructor chứ không phải từ Array.
+
+- Ta cũng có thể thay đổi cách trả về như trên.
+- Ta có thể add 1 special : static getter Symbol.species vào class. Nếu thêm vào thì nó nên trả về constructor mà JS sẽ dùng để tạo new entities trong map, filter
+
+	class PowerArray extends Array {
+	  isEmpty() {
+		return this.length === 0;
+	  }
+
+	  // built-in methods will use this as the constructor
+	  static get [Symbol.species]() {
+		return Array;
+	  }
+	}
+
+	let arr = new PowerArray(1, 2, 5, 10, 50);
+	alert(arr.isEmpty()); // false
+
+	// filter creates new array using arr.constructor[Symbol.species] as constructor
+	let filteredArr = arr.filter(item => item >= 10);
+
+	// filteredArr is not PowerArray, but Array
+	alert(filteredArr.isEmpty()); // Error: filteredArr.isEmpty is not a function
+	
+- As you can see, now .filter returns Array. So the extended functionality is not passed any further.
+
+- Đối với cac built-in classes , chúng sẽ không kế thừa statics lẫn nhau.
+- Ví dụ Array và Date inherit từ Object nhưng Array.[[Prototype]] sẽ không tham chiếu đến Object.nên sẽ ko có Array.keys()...
+
+NOTE : Array.[[Prototype]] khác với Array.prototype 

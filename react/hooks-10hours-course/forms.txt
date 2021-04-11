@@ -1,0 +1,1 @@
+- khi dùng useState với input thì không thể gán trực tiếp value cho input mà không có hàm onChange nếu không sẽ báo lỗi. Do ta kết  nối trực tiếp value với value của useState mà ta chỉ có thể thay đổi value của useState thông qua setValue().

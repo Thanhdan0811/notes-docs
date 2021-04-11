@@ -1,0 +1,96 @@
+************** Element Size and Scrolling ******************
+** offsetParent : là phần tử cha gần nhất để tính toán tọa độ.
+- phần tử cha sẽ được xác định như sau :
+	+ CSS-position : absolute, relative, fixed, sticky.
+	+ td, th or table
+	+ body
+
+** offsetTop, offsetLeft : cho biết tọa độ x/y liên quan đến offsetParent
+
+** offsetWidth, offsetHeight : width và height của element bao gồm cả border, 
+- If nếu set display : none thì tất cả Geometry property sẽ là 0
+- Sẽ Không bao gồm width của ::before, ::after
+- Với height sẽ không bao gồm phần tử bị floated ???
+
+** clientTop, clientLeft : cho biết top border width và left border width.
+- Nếu có scroll bar bên phải thì clientLeft sẽ + thêm scroll bar width.
+- Có thể hiểu đây như là tọa độ liên quan giữa outer và inner side của element.
+
+** clientWidth, clientHeight : width và height bên trong element gồm cả padding nhưng không có width của scroll bar, border
+- Nếu không có padding thì sẽ bằng với content.
+- Sẽ là 0 với inline element và elements không có CSS
+- Với width và height : khi get ở <html> hoặc <body> sẽ trả về viewport's width hoặc height.
+ 
+** scrollWidth, scrollHeight : Giống như clientWidth và clientHeight không chứa width của scrollbar, border nhưng sẽ có thêm phần width và height bị scroll ra ngoài.
+- Có chứa cả ::before và ::after.
+- Nếu ko bị out sẽ bằng với clientWidth và clientHeight.
+
+** scrollLeft, scrollTop : là phần bị ẩn đi bên ngoài scroll out. 
+- scrollLeft, scrollTop : sẽ là 0 nếu chưa scroll qua phải hay xuống.
+- NOTE : riêng chỉ có 2 giá trị này có thể dùng để set cho việc scroll qua trái hoặc xuống.
+	 Các giá trị khác sẽ chỉ là read-only.
+
+** Ta nên sử dụng geometry properties thường xuyên, Thay vì get style bằng getComputedStyle() vì :
+- CSS width/ height : sẽ phụ thuộc vào box-sizing 
+- CSS width/ height : có thể là auto ví dụ inline element.
+- Ngoài ra còn do scrollBar. getComputedStyle() với 1 số trình duyệt sẽ trả về đúng width 1 số sẽ trả về width - width của scrollBar.
+
+************** Window Size and Scrolling ******************
+** width/height của window : Để lấy width, height của window ta có thể dùng clientWidth/ clientHeight với document.documentElement
+- <html> : document.documentElement 
+- window.innerWidth/ window.innerHeight : sẽ chứa cả scroll bar.
+
+** Get the current scroll :
+- Ta hay dùng element.scrollLeft/scrollTop
+- Với document : Ta có thể dùng document.documentElement.scrollTop/scrollLeft hoặc document.body.scrollTop/scrollLeft (Với safari)
+- Chính xác hơn với document ta sẽ dùng : window.pageXOffset/pageYOffset : NOTE : Những properties này chỉ là read-only
+
+** Scrolling : scrollTo, scrollBy, scrollIntoView :
+- NOTE để scroll thì DOM phải full built.
+- window.scrollTo(x,y) hoặc window.scrollTo(options) : 
+- window.scrollBy(x,y) hoặc window.scrollBy(options) : 
+- options là 1 object sẽ có 3 thuộc tính sau : options.top, options.left, options.behavior(2 giá trị auto hoặc smooth) : sẽ áp dụng cho các scroll như sau :
+	+ window.scroll()
+	+ window.scrollTo()
+	+ window.scrollBy()
+	+ Element.scroll()
+	+ Element.scrollTo()
+	+ Element.scrollBy()
+
+- Element.scrollIntoView() || Element.scrollIntoView(alignOnTop) : boolean parameter || Element.scrollIntoView(scrollIntoViewOptions) : Object parameter
+	+ alignOnTop : là boolean : 
+		* true : sẽ align ở trên top tương đương với scrollIntoViewOptions : {block: "start", inline: "nearest"}
+		* false : sẽ align ở dưới bottom tương đương với scrollIntoViewOptions : {block: "end", inline: "nearest"}
+	+ scrollIntoViewOptions : là 1 object :
+		* behavior : auto(default) or smooth
+		* block : start(default), center, end, nearest : theo chiều vertical
+		* inline :  start, center, end, nearest(default) : theo chiều horizontal
+
+
+************** Coordinates : Tọa độ ******************
+- Để di chuyển element ta phải làm quen với tọa độ. Sẽ có 2 hệ tọa độ sau :
+- Relative to the window : clientX/clientY : position: fixed ; tính toán theo top/left edge của window
+- Relative to the document : pageX/PageY : position: absolute ở document root tính toán theo top/left edge của document
+	+ pageYOffset, pageXOffset : độ dời theo X và Y tọa độ của document hay trả về độ dời px đã được scroll của document
+- Khi scroll thì clientX/clientY sẽ thay đổi do đối chiếu với window
+
+** Element coordinates : getBoundingClientRect :
+- element.getBoundingClientRect() : sẽ trả về window coordinates của hình chữ nhật mini ao quanh element như là 1 object được built-in DOMRect class.
+- Các properties chính của DOMRect :
+	+ x/y : X/Y coordinates của hình chữ nhật liên quan đến window, giống như top, left trong offsetTop, offsetLeft, y đọ dài từ cạnh trên của window đến cạnh trên của element.
+	+ width/height : width/height của hình chữ nhật có thể có giá trị âm
+	- 2 giá trị dưới là derived properties
+	+ top/bottom : Y-coordinate cho top/bottom của cạnh hình chữ nhật
+	+ left/right : X-coordinate cho left/right của cạnh hình chữ nhật
+- Bình thường thì : 
+	+ left = x
+	+ top  = y
+	+ right = x + width  : Khác right trong css
+	+ bottom = y + height : Khác bottom trong css
+- Các giá trị này có thể là số thập phân
+- Các giá trị này có thể là số âm do khi scroll thì sẽ âm.
+
+** elementFromPoint(x,y) : Trả về element tại window coordinates (x,y)
+- let element = elementFromPoint(x,y); do dựa theo tọa độ window nên khi scroll sẽ cho các kết quả khác nhau
+- Nếu x, y không nằm trong vùng nhìn thấy của window thì sẽ trả về null
+** 

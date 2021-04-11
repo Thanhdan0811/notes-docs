@@ -1,0 +1,32 @@
+npm install redux react-redux --save : dùng trong quá trình sử dụng và cả phát triển, cả 2 thư viện.
+$ npm install redux react-redux --save-dev : dùng trong quá trình phát triển dự án
+- flux là tiền thân của redux 
+
+- Trong redux có store, trong store có reducer 1 reducer là 1 file riêng - xử lý action từ component, action là hành động được gửi lên từ component 
+	+ store
+	+ reducer
+	+ action
+
+- Các bước thực hiện redux :
+	+ instal redux : npm install redux react-redux --save;
+	+ import Provider từ 'react-redux' vào file index.js ở src và bọc quanh <App> </App> : <Provider store={store}></Provider>
+	+ import createStore và combineReducers  từ 'redux';
+	
+		const tenReducerTong = combineReducers({
+									tenDuLieu : tenReducerQL,
+									......
+								}); 
+			combineReducers sẽ trả về reducer tổng nếu ko có sẽ báo lỗi : reducer tổng sẽ là 
+		const store = createStore({tenReducerTong}) 
+			tenReducer đây chính là reducer tổng 
+			
+	+ Sau đó có thể export store đến index ở src và sử dụng trong <Provider store={store}></Provider>.
+	+ tenReducerQL : sẽ là 1 hàm nhận 2 tham số đầu vào là state và action. 
+		state sẽ là giá trị trả về. 
+		action là hành động gửi lên store. sử dụng switch để xử lý các action được dispatch lên.
+	
+	
+- Để sử dụng redux ở jsx : 
+	+ import connect từ 'react-redux'
+	+ ở export default connect(mapStateToProps)(TenComponent);
+	+ mapStateToProps là 1 hàm nhận vào tham số là state và trả về 1 object chứa props => tenProps : state.tenDuLieu;

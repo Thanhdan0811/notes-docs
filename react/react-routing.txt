@@ -1,0 +1,9 @@
+- React không có cơ chế routing, phải dùng thư viện ngoài.
+- npm install react-router-dom
+- chỉ những component dùng với Route mới có 3 props là history, location và match
+
+- HOCs : High order component : sinh ra chỉ có mục đích là bọc component lại để tái sử dụng code.
+
+- guard routing : xây dựng lớp bảo vệ cho routing.
+
+

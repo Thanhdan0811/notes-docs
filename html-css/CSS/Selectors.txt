@@ -1,0 +1,28 @@
+- :first-child : chọn phần tử đầu tiên nhưng phải có parent.
+- :last-child
+- :only-child : sẽ chỉ áp dụng khi nó là con duy nhất của parent. có sibling sẽ ko áp dụng.
+- :nth-child(n) : chọn child thứ n, có thể dùng even hoặc odd để chọn vị trí child chẳn , lẻ.
+- :nth-last-child(n) : tương tự như bộ chọn :nth-child(n) nhưng nó tính từ cuối.
+- A:not(B)	; chọn tất cả phần tử A mà ko phải B : p:not(.class)
+- :first-of-type ; chọn phần tử đầu tiền thuộc loại này trong số sibling của nó.
+- :last-of-type ; chọn phần tử cuối cùng thuộc loại này trong số sibling của nó.
+- :nth-of-type(n); chọn phần tử thứ n của loại đó.
+- :only-of-type ; chọn phần tử chỉ có loại đó ko có anh chị em cùng loại, khác thì ok.
+
+- :focus : chọn phần tử đang tập trung vào nó, thường áp dụng với input
+
+- A[B] : chọn tất cả element A có thuộc tính B : div[for]
+- A[B="C"]  : chọn tất cả element A có property B với value C. : div[for="chocolate"]
+- A[B^="C"] : chọn tất cả element A có property B với value begin with C. : div[for^="cho"]
+- A[B$="C"] : chon tất cả element A có property B với value end with C.  : div[for$="er"]
+- A[B*="C"] : chọn tất cả element A có property B với value include C in it. : div[for*="ut"]
+
+
+********* Combinators *********
+- descendant selector (space) : Chọn tất cả hậu duệ, con cháu
+- child selector (>) : Chọn tất cả con trực tiếp
+- adjacent sibling selector (+) : Chọn sibling chỉ ngay sau nó
+- general sibling selector (~) : Chọn tất cả sibling từ nó trở xuống.
+ 
+
+ 

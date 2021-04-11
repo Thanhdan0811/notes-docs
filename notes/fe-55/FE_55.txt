@@ -1,0 +1,41 @@
+*************************Day 1*****************************
+- 4 Giai đoạn
+	 10 Tuần : UI tĩnh
+	 	 : Js cơ bản, es6
+		 : ReactJS
+		 : Angular
+	 
+- Mỗi web chỉ nên có 3 màu ngoài trắng đen : 1 chính() 2 phụ 
+- Video Photoshop cơ bản
+- auto close tag, auto rename tag, open in browser, live Server, Material icon theme
+- Cơ chế browser là tự động tìm file index
+- meta:utf
+- meta:desc
+- meta:vp
+- 
+*************************Day 2*****************************
+- Khi dùng table : Ô nào đã đến rồi không đếm lại nữa
+- Thuộc tính align dành riêng cho thẻ table
+- id 100 ; class 10; tag 1
+- Không nên xóa code cũ mà nên đè code
+- Logo + menu là header hay navigation bar với menu
+- Slider Caroself là hình ở phía dưới header
+- Introduction : phần giới thiệu công ty
+- Các phần tiếp theo có thể đặt theo tên 
+- 
+- Footer
+- 
+- BA : bussiness Analis
+- Foat phải set thêm width, tối đa 100%
+
+*************************Day 3*****************************
+- Clear có thể tạo 1 div với class clear được set như sau : .clear {clear: both};
+- 
+*************************Day 4*****************************
+- float kỹ thuật cũ
+- flex và grid là kỹ thuật mới.
+- Tham khảo phiên bản áp dụng :
+	+ 
+- Thư viện cần có demo
+- Thư viện có hướng dẫn sử dụng
+- js để ở cuối để nếu có lỗi sẽ không bị dừng chương trình.

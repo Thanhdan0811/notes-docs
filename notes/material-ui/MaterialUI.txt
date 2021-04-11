@@ -1,0 +1,32 @@
+************************** Default Breakpoints **********************
+- Mỗi breakpoint sẽ match với 1 fixed screen width.
+	+ xs : extra-small : 0px
+	+ sm : small : 600px
+	+ md : medium : 960px
+	+ lg : large : 1280px
+	+ xl : extra-large : 1920px
+- Những breakpoint này có thể được dùng để tạo breakpoint range.
+
+	+ xs --> sm : range là xs : 0 --> 600px
+	+ sm --> md : range là sm : 600px --> 960px
+	+ md --> lg : range là md : 960px --> 1280px
+	+ lg --> xl : range là lg : 1280px --> 1920px
+	+ xl ---> 	: range là xl : lớn hơn 1920px
+
+
+************************** Display, Overflow, TextOverFlow **********************
+- sử dụng props là display='inline';
+- sử dụng props là display='block';
+- sử dụng props là display='flex';
+	+ sử dụng props là flexDirection='row|row-reverse';
+	+ sử dụng props là flexWrap='wrap|nowrap';
+	+ 
+- ẩn trong khoảng xs : display={{xs : 'none', sm: 'block'}}; => chú ý 2 dấu ngoặc.
+- ẩn trong khoảng sm : display={{xs : 'block', sm: 'none', md : 'block'}};
+** overflow.....
+- sử dụng props là overflow='hidden|visible';
+- sử dụng props là textOverflow='clip|ellipsis';
+- sử dụng props là visibility="visible|hidden";
+- sử dụng props là whiteSpace='normal | nowrap';
+
+

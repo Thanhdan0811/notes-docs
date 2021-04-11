@@ -1,0 +1,117 @@
+** Promise là 1 object  JS đặc biệt.
+- Syntax :
+
+	let promise = new Promise(function(resolve, reject) {
+		// executor 
+	})
+	
+- function được pass vào new Promise được gọi là executor, Khi new Promise được khởi tạo, the executor sẽ tự động chạy, và trả về 1 result.
+
+- 2 arguments của the executor là resolve, reject là 2 function callback được cấp bởi js, code của chúng ta sẽ chỉ nằm trong executor.
+
+- Khi executor nhận được result, sớm hay muộn nó sẽ gọi 1 trong 2 hàm callback này.
+
+	+ resolve(value) : nếu việc thực hiện thành công , kết quả sẽ là value.
+	+ reject(err) : nếu xảy ra lỗi, err sẽ là err object.
+	
+==> Khi the executor chạy nó sẽ thực hiện 1 đoạn code, khi xong nó sẽ gọi 1 trong 2 callback ứng với thành công và lỗi.
+
+- The promise object được trả về từ new Promise constructor sẽ có các internal properties sau :
+
+	+ state : lúc đầu sẽ là pending, sau đó sẽ thay đổi thành 'fulfilled' khi resolve callback được gọi hoặc 'rejected' khi reject callback được gọi.
+	+ result : lúc đầu là undefined, sau đó sẽ thay đổi thành value khi resolve(value) callback được gọi hoặc error khi reject(error) callback được gọi.
+	
+	
+	
+==> initialy : state: 'pending', result: undefined;
+==> resolve(value) : --> state : 'fulfilled', result: value;
+==> reject(err) : --> state: 'rejected', result: err;
+
+
+
+- 1 promise mà có 1 trong 2 callback được gọi thì promise sẽ được gọi là 'settled'. ngược lại lúc chưa trả về thì sẽ được gọi là 'pending' promise.
+- Nếu có nhiều callback được gọi thì sẽ chỉ áp dụng cái đầu tiên.
+- Ta có thể gọi callback ngay lập tức trong executor mà không cần phải chạy code.
+- state và result là 2 internal properties nên ta không thể access trực tiếp.
+
+***** Consumers : then, catch, finally.
+** Then :
+- Syntax :
+
+		promise.then(
+			function(result) {// handle a successful result},
+			function(error) {//handle error}
+		);
+
+- first argument của .then là 1 function sẽ chạy khi promise được resolved và nhận về result.
+- second argument của .then là 1 function sẽ chạu khi promise được rejected và nhận về error.
+
+		/// Resolve
+		let promise = new Promise(function(resolve, reject) {
+		  setTimeout(() => resolve("done!"), 1000);
+		});
+
+		// resolve runs the first function in .then
+		promise.then(
+		  result => alert(result), // shows "done!" after 1 second
+		  error => alert(error) // doesn't run
+		);
+		
+		/// Rejected
+		let promise = new Promise(function(resolve, reject) {
+		  setTimeout(() => reject(new Error("Whoops!")), 1000);
+		});
+
+		// reject runs the second function in .then
+		promise.then(
+		  result => alert(result), // doesn't run
+		  error => alert(error) // shows "Error: Whoops!" after 1 second
+		);
+		
+- Nếu ta chỉ quan tâm đến resolved ta chỉ cần truyền vào first argument.
+
+		let promise = new Promise(resolve => {
+		  setTimeout(() => resolve("done!"), 1000);
+		});
+
+		promise.then(alert); // shows "done!" after 1 second
+- Nếu ta chỉ quan tâm đến error ta có thể pass first argument là null và second argument là function		
+*** Catch : 
+
+- Nếu ta muốn bắt lỗi nhưng không muốn làm như trên ta có thể dùng catch.
+
+	let promise = new Promise((resolve, reject) => {
+	  setTimeout(() => reject(new Error("Whoops!")), 1000);
+	});
+
+	// .catch(f) is the same as promise.then(null, f)
+	promise.catch(alert); // shows "Error: Whoops!" after 1 second
+	
+*** finally :
+- promise cũng có .finally.
+
+	new Promise((resolve, reject) => {
+	  /* do something that takes time, and then call resolve/reject */
+	})
+	  // runs when the promise is settled, doesn't matter successfully or not
+	  .finally(() => stop loading indicator)
+	  // so the loading indicator is always stopped before we process the result/error
+	  .then(result => show result, err => show error)
+
+- NOTE : finally(f) handler sẽ không có arguments, trong finally ta không biết promise thành công hay lỗi.
+		 finally handler sẽ truyền hay pass results và errors đến handler tiếp theo.
+		 
+		new Promise((resolve, reject) => {
+		  setTimeout(() => resolve("result"), 2000)
+		})
+		  .finally(() => alert("Promise ready"))
+		  .then(result => alert(result)); // <-- .then handles the result
+		  
+
+- Ở trên, in ra "Promise ready" trước sau đó là 'result';
+
+==> finally sẽ không có nghĩa là xử lý promise result.
+
+- Nếu promise is pending thì .then/catch/finally sẽ đợi nó.
+		
+		

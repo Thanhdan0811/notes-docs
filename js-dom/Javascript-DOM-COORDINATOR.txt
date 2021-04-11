@@ -1,0 +1,136 @@
+- Document ready : Cần chờ cho nội dung HTML load xong để tránh lỗi.
+	+ document.addEventListener("DOMContentLoaded", function(){},false)
+- arr.sort(fn(a,b)) fn(a,b) hàm thực hiện tính toán hay so sánh a, b . trả về số + thì là lớn hơn, - thì là bé hơn.
+
+*************************************************Walking the DOM*********************************************
+
+- Tất cả DOM bắt đầu với document object. Từ đó ta có thể access bất cứ node nào.
+- HTML : document.documentElement.
+- Body : document.body
+- Khi dùng bộ chọn thì nó sẽ là 1 collection có thể dùng for..of
+- Các cách lấy element lân cận :
+	+ parentElement
+	+ previousElementSibling
+	+ nextElementSibling
+	+ firstElementChild
+	+ lastElementChild
+	+ children 
+
+*************************************************Attributes and properties********************************************* 
+
+- Truy cập, lấy attributes : 
+	+ elem.hasAttribute(name) – checks for existence.
+	+ elem.getAttribute(name) – gets the value.	=> document.body.getAttribute('something')
+	+ elem.setAttribute(name, value) – sets the value.  =>  elem.setAttribute('Test', 123)
+	+ elem.removeAttribute(name) – removes the attribute. => 
+	+ elem.attributes: a collection of objects that belong to a built-in Attr class, with name and value properties.
+- Chú ý : HTML attributes có các đặc điểm sau : là case-insensitive ID cũng được xem như id và giá trị sẽ luôn là STRING.
+- Khi HTML attribute thay đổi thì property tương ứng cũng sẽ thay đổi theo, và ngược lại.
+- Nhưng ở 1 số trường hợp sẽ chỉ cập nhật từ HTML attribute => property còn chiều property => HTML attribute thì không được. như input.value.
+- DOM propery không phải lúc nào cũng là string : input.checked là boolean. Trong khi đó, style trong HTML attribute là string, nhưng trong 
+	property lại là Object. href trong property sẽ luôn trả về full URL.
+-  if an elem has an attribute named "data-about", it’s available as elem.dataset.about. data-order-state become camel-cased: dataset.orderState.
+
+*************************************************About Class*********************************************
+
+- element.className : trả về string tên các class name. Nếu gán bằng cách này thì sẽ xóa tất cả các class và thay bằng class mới.
+- Ta sẽ dùng classList như sau :
+	+ elem.classList.add/remove("class") – adds/removes the class.
+	+ elem.classList.toggle("class") – adds the class if it doesn’t exist, otherwise removes it.
+	+ elem.classList.contains("class") – checks for the given class, returns true/false.
+- classLisst là iterable ta có thể dùng for...of
+- Property element.style là 1 object :
+	+ background-color  => elem.style.backgroundColor
+	+ z-index           => elem.style.zIndex
+	+ border-left-width => elem.style.borderLeftWidth
+	+ document.body.style.margin = '20px';
+	+ -moz-border-radius=> .style.MozBorderRadius  : '-' có nghĩa là uppercase
+- Có 1 property đặc biệt : element.style.cssText : sẽ set style bằng string 
+	+ div.style.cssText= `
+				color: red !important;
+    				background-color: yellow;
+    				width: 100px;
+    				text-align: center;
+  			    `;
+- Chú ý : property style sẽ chỉ trả về hay hoạt động với value của style attribute , mà ko có CSS.
+- Để lấy các giá trị ta sẽ dùng : getComputedStyle(element, [pseudo]) : sẽ trả về 1 object chứa tất cả các style. 
+_ chú ý , có 2 giá trị trong CSS như sau :
+	+ computed style value : là giá trị giống như CSS như 1em, 125%.
+	+ resolved style value : là giá trị cuối cùng của element, giá trị absolute, fixed như 20px, 16px, hay thậm chí 10.5px
+- getComputedStyle() sẽ trả về giá trị resolved style value.
+- Một lưu ý khác là ta sẽ phải chỉ rỏ ra property cần lấy giá trị như marginTop chứ ko được dùng margin nếu ko sẽ trả về empty.
+
+*************************************************Modifying the document********************************************
+- let div = document.createElement('div'); Tạo element là div và gán vào biến div.
+- let textNode = document.createTextNode('Here I am'); tạo text node mới với giá trị text được truyền vào.
+- thêm bớt, chỉnh sửa như sau div.innerHTML, div.className....
+- để thêm và body hay bất cứ vị trí nào ta làm như sau :
+	+ node.append(...nodes or strings) – append nodes or strings at the end of node. 
+	+ node.prepend(...nodes or strings) – insert nodes or strings at the beginning of node
+	+ node.before(...nodes or strings) –- insert nodes or strings before node
+	+ node.after(...nodes or strings) –- insert nodes or strings after node
+	+ node.replaceWith(...nodes or strings) –- replaces node with the given nodes or strings.
+	
+	=> ol.append(liLast);
+
+- Ta cũng có thể làm như sau : div.before('<p>Hello</p>', document.createElement('hr'));
+
+- Nếu ta muốn add bằng html như innerHTML ta sẽ lm như sau : ta sẽ dùng : elem.insertAdjacentHTML(where, html) : 
+	+ "beforebegin" – insert html immediately before elem
+	+ "afterbegin" – insert html into elem, at the beginning
+	+ "beforeend" – insert html into elem, at the end
+	+ "afterend" – insert html immediately after elem
+	=> div.insertAdjacentHTML('beforebegin', '<p>Hello</p>');
+
+- Để xóa 1 node ta dùng : node.remove() : let div = document.createElement('div'); => div.remove().
+- Để di chuyển element ta có thể dùng các method insertion.
+
+- Để clone 1 node ta có thể dùng như sau  :
+	+ elem.cloneNode(true) : tạo và trả về deep node. với tất cả attributes và subelement.
+	+ elem.cloneNode(false) : như trên nhưng sẽ ko có child elements.
+
+**************************************************Element size and scrolling*******************************************
+
+- offsetLeft/offsetTop sẽ trả về vị trí tọa độ x/y so với offsetParent góc trái phía trên. element.offsetParent.id or .tagName sẽ trả về phần tử cần so sánh với element.
+- offsetWidth/Height : width/height của element chứa cả border và thanh scroll. nếu display none thì sẽ trả về 0.
+- clientTop/Left : đo độ rộng của border tính luôn cả scroll nếu có (trường hợp thanh scroll nằm bên trái hoặc ở trên).
+- clientWidth/Height : width/height của element bên trong border ko tính thanh scroll.
+- scrollWidth/Height : clientWidth/Height nhưng tính luôn phần bị ẩn(hidden) do scroll.
+- scrollLeft/scrollTop : là width/height của phần bị ẩn đi. scrollTop còn có thể xem như là cách top bao nhiêu xa.
+
+Chú ý : chỉ có scrollLeft/scrollTop là có thể gán giá trị các properties khác thì chỉ có read-only. browser sẽ scroll khi 2 giá trị này thay đổi.
+
+- Chú ý : ta cần xem xét khi lấy width/height bằng CSS, đôi khi sẽ trả về auto, để lấy chính xác ta có thể dùng clientWidth....
+
+**************************************************Window sizes and scrolling*******************************************
+
+- Để lấy window width, height ta có thể dùng clientWidth/Height của document.documentElement.
+- Khác với window.innerHeight/Width có tính luôn scroll bar, còn client thì ko.
+- Để lấy chính xác window width/height ta dùng thủ thuật sau :
+	+ let scrollHeight = Math.max(
+  					document.body.scrollHeight, document.documentElement.scrollHeight,
+  					document.body.offsetHeight, document.documentElement.offsetHeight,
+  					document.body.clientHeight, document.documentElement.clientHeight
+				);
+- Để xác định ví trí của scroll ta có thể dùng scrollTop/Left cho element, với window thì dùng 	window.pageXOffset/pageYOffset. Các giá trị này chỉ có thể read-only.
+- Để scroll đến vị trí bất kỳ trong document ta có thể dùng document.documentElement.scrollTop/Left hoặc document.body.scrollTop/Left. Ngoài ra :
+	+ window.scrollBy(x,y) : scrolls the page so với vị trí tương đối hiện tại của nó.
+	+ window.scrollTo(pageX,pageY) : scroll the page theo tọa độ tuyệt đối, theo document.
+	+ element.scrollIntoView(top) : scroll the page để hiển thị element. chỉ có 1 đối số : top = true (default) thì element sẽ ở top của window. false ngược lại.
+
+**************************************************Coordinates**********************************************
+
+-Hầu hết các method sẽ làm việc với 1 trong 2 loại tọa độ sau :
+ - Liên quan đến window : như position : fixed; ta sẽ dùng tọa độ như : clientX/clientY.
+ - Liên quan đến document: như position: absolute; ta sẽ dùng tọa độ như : pageX/pageY.
+ - KHi bắt đầu scroll thì top/left của window sẽ như document, nhưng sau khi scroll thì window-relative coordinates sẽ thay đổi. 
+- Để lấy tọa độ của element ta dùng như sau : 
+- element.getBoundingClientRect() sẽ trả về tọa độ window cho hình chữ nhật bao quanh element, trả về object. bao gồm :
+	+ x/y : tọa độ X/Y của góc hình chữ nhật so với window.  
+	+ width/height : của hình chữ nhật, có thể âm.
+	+ top/bottom : tọa độ Y cho top/bottom của 2 cạnh trên dưới của hình chữ nhật. => top = y, bottom = y + height.
+	+ left/right : tọa độ X cho left/right của 2 cạnh bên của hình chữ nhật. => left = x, right = x + width. 
+
+- document.elementFromPoint(x,y) : trả về the most nested element có tọa độ window tại (x,y) : let elem = document.elementFromPoint(x, y); nếu tọa độ bên ngoài thì sẽ null
+
+

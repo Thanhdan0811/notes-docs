@@ -1,0 +1,71 @@
+--- git clone <url>
+--- git add <file-name>
+--- git commit -m <comment>
+--- git config --global user.email "you@example.com"
+--- git config --global user.name "your name"
+- git conflict : sẽ có dạng như sau :
+	+ <<<<<<< HEAD
+	b = 2
+	=====
+	b = 0
+	>>>>>>>> 57674c354f6541654a5454f54564
+- Lúc này phần ở giữa head và === là code của mình sửa
+- phần từ ==== đến chuỗi hash là phần thay đổi của remote hay của ng khác.
+- Chúng ta chỉ cần xóa phần muốn bỏ đi và sử dụng git add lại từ đầu.
+- Đoạn hash trên là chuỗi định danh duy nhất cho mỗi lần commit.
+
+--- git log : khi dùng lệnh này sẽ show ra danh sách chứa tất cả các commit khác nhau đã được commit lên. có dạng như sau :
+	
+	commit 2461654a654684a1 : chuỗi hash	
+	Author : name <email>
+	Date: ngày tháng năm
+
+--- git reset --hard <commit hash>: reset toàn bộ repository trở lại commit với hash tương ứng
+--- git reset --hard origin/master:   reset toàn bộ repository trở lại origin hay còn gọi là gốc của repository
+--- git reflog : sẽ hiện ra tất cả những hành động của ta trên git. rất hữu ích.
+\
+
+
+
+
+*******************
+Git : 
+** Những câu lệnh cơ bản
+- Tạp 1 local server git tại máy tính của mình : git init
+- git remote add origin [link_server] : Kết nối local với server gitHub
+- git config --global user.email 'email' : cấu hình tài khoản git vào máy
+- git add [ten_file] | [folder] | [-A]  : lệnh chọn tập tin back up lại
+	+ git add -A : chọn tất cả file thay đổi 
+- git commit -m 'ghi chú' : lệnh tạo ra version tại local, tạo ra các version backup để có thể quay lại.
+- git push -u origin [ten_nhanh] : vừa push vừa tạo nhánh, hoặc đang ở nhánh khác muốn push lên nhánh đó
+- git restore 
+
+
+
+** clone 1 dự án khác về
+- Tạo 1 thư mục trống
+- git clone [đường link copy từ dự án] : lấy source từ server về thường chỉ làm 1 lần sau đó dùng git pull.
+
+
+- Không phải version mới nhất không có quyền push code
+- Để là version mới nhất ta sẽ dùng : git pull
+- git pull : nên pull code về trước khi code để cập nhật version mới nhất.
+
+
+- Accept Current Change : Lấy code của mình hiện tại
+- Acceppt Incoming change : Lấy code của code đc pull về
+
+
+** Những câu lệnh nâng cao 
+- git checkout -b [tên nhánh]; chuyển về commit tại nhánh đó
+- git checkout [ma_version] : về tại thời điểm commit version đó.
+
+
+- Merge code sẽ có 2 loại : ở local và từ server về
+- git merge tên_nhánh : merger local
+- git pull origin [ten_nhanh_server] : merge server
+
+
+NOTE : LÀM MẤT SOURCE CODE 
+- TRƯỚC KHI THỰC HIỆN LỆNH CHECKOUT PHẢI COMMIT TRƯỚC 
+ 

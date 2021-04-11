@@ -1,0 +1,24 @@
+- Có 3 loại primary component trong React Router:
+
+1. : routers => như <BrowserRouter> và <HashRouter>.
+2. : route matches => <Route/> và <Switch/>.
+3. : navigation => <Link> và <NavLink> và <Redirect>.
+
+************ Routers *********
+- Đối với web thì react-router-dom sẽ cung cấp 2 routers như trên, hai loại này sẽ khác nhau về cách chứa URL và cách giao tiếp với Web server..
+-
+
+
+************ Route Matchers *****
+- Có 2 route matching component như trên, 
+- Khi Switch được render thì nó sẽ search qua các children <Route> elements của nó và tìm những path match với current URL. Khi nó tìm ra, nó sẽ render <Route/> và bỏ qua những cái còn lại.
+- Điều này có nghĩa là ta nên để các <Route/> có path dài hay path chi tiết hơn ở trên các <Route/> có path ngắn ít chi tiết hơn.
+- Nếu ko có match thì <Switch/> sẽ render nothing hay null.
+
+NOTE : <Route/> sẽ match ký tự bắt đầu của URL không phải là cả string, Nên <Route path='/' /> sẽ luôn match với các URL do đó ta thường để <Route/> này ở cuối Switch hoặc thêm từ khóa exact để thực hiện việc match toàn bộ URL.
+
+
+************ Naviagtion *****
+- React Router cung cấp <Link/> component để tạo link trong app, bất cứ khi nào render 1 <Link/> thì 1 anchor (<a>) sẽ được render vào HTML document.
+- The <NavLink/>  là 1 <Link/> đặc biệt mà nó sẽ style chính bản thân  nó là 'active' khi prop to của nó match với current Location.
+- Bất cứ khi nào ta muốn force navigation, ta có thể render <Redirect/>. Khi được render nó sẽ navigate sử dụng prop to của nó.

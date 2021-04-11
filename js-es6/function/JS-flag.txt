@@ -1,0 +1,84 @@
+******************************************Property flags and descriptors********************************
+* cấu hình các properties :
+- Các cờ FLAG của Property : bên cạnh value còn có 3 atributes khác như sau :
+	+  writable : if true, the value can be changed, otherwise it’s read-only.
+	+  enumerable – if true, then listed in loops, otherwise not listed.
+	+  configurable – if true, the property can be deleted and these attributes can be modified, otherwise not.
+- Khi tạo 1 property thông thường thì các attributes trên sẽ là true.
+- Sử dụng method :  Object.getOwnPropertyDescriptor cho phép ta truy vấn full thông tin về property :
+	
+	+ let descriptor = Object.getOwnPropertyDescriptor(obj, propertyName);
+	+ obj : là object cần lấy info
+	+ propertyname : tên của property
+
+- method trên sẽ trả về 1 object được gọi là "property descriptor" : chứa value và các flags
+
+- Để thay đổi các flag ta dùng method : Object.defineProperty : 
+	
+		Object.defineProperties(obj, {
+ 			 prop1: descriptor1,
+  			prop2: descriptor2
+  			// ...
+			});
+	
+	+ Object.defineProperty(obj, propertyName, descriptor)
+	+ obj, propertyName : là object và property của object đó cần áp dụng các thay đổi.
+	+ descriptor : Property descriptor object to apply.
+
+- Nếu property tồn tại thì sẽ update nó, Nếu ko thì sẽ tạo property đó với value được cung cấp và các flags, lúc này nếu ta không đụng đến flags thì sẽ mặc định là false.
+
+		let user = {};
+		
+		Object.defineProperty(user, "name", {
+		  value: "John"
+		});
+
+		let descriptor = Object.getOwnPropertyDescriptor(user, 'name');
+
+		alert( JSON.stringify(descriptor, null, 2 ) );
+		/*
+		{
+		  "value": "John",
+		  "writable": false,
+		  "enumerable": false,
+		  "configurable": false
+		}
+		 */
+
+** Non-writable
+- 
+		let user = {
+		  name: "John"  // lúc này các flags sẽ là true
+		};
+
+		Object.defineProperty(user, "name", {
+		  writable: false
+		});
+
+		user.name = "Pete"; // Error: Cannot assign to read only property 'name'
+** Non-enumerable : sẽ ko lặp trong for...in và cả Objects.key
+		let user = {
+		  name: "John",
+		  toString() {
+		    return this.name;
+		  }
+		};
+
+		Object.defineProperty(user, "toString", {
+		  enumerable: false
+		});
+
+		// Now our toString disappears:
+		for (let key in user) alert(key); // name
+
+** Non-configurable : sẽ không thể bị delete 
+
+- Làm cho 1 property Non-configurable thì sẽ không thể thay đổi ngược lại bằng defineProperty.
+- Non-configurable sẽ áp đặt(imposes) 1 số hạn chế(restrictions) với defineProperty :
+	+ Can’t change configurable flag.
+	+ Can’t change enumerable flag.
+	+ Can’t change writable: false to true (the other way round works).
+	+ Can’t change get/set for an accessor property (but can assign them if absent).
+- “Non-configurable” doesn’t mean “non-writable” : chỉ tránh bị delete
+
+

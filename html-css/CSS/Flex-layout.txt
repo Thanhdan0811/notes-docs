@@ -1,0 +1,40 @@
+Flex box sẽ có 2 đối tượng : flex- container và flex-items bên trong flex-items
+- flex-container : 
+	+ flex-direction : row(default) | row-reverse | column | column reverse; Thay đổi chiều của các items bên trong flex-container.
+	+ flex-wrap : wrap | nowrap | wrap-reverse ; sẽ bắt đầu line mới khi container ko đủ space để chứa item. với reverse sẽ đẩy phần dư lên trên thay vì xuống dưới.
+	+ justify-content : sắp xếp theo chiểu ngang
+			    * flex-start(default) : bắt đầu bên trái.
+			    * flex-end : đẩy qua bên phải.
+			    * space-between : item đầu và cuối sẽ ở sát biên, các items còn lại sẽ có khoảng cách đều nhau.
+			    * space-around : có khoảng trắng giữa các items hay có margin với các cạnh. space giữa đầu và cuối khá ít. thêm khoảng cách 2 bên
+			    * space-evenly : có khoảng trắng nhưng cách đều nhau.
+			    * center : các items sẽ bị đẩy ra center nhưng ko có space giữa các items
+
+	+ align-items : sắp xếp theo chiều dọc., sẽ align theo khoảng trống của mỗi hàng
+			    * stretch(default) : kéo dãn item cho bằng với height của container.không có space giữa các items
+			    * flex-start :  xếp items trên top của container.không có space giữa các items
+			    * flex-end :   xếp items dưới bottom của container.không có space giữa các items
+			    * center : sẽ xếp items ra giữa. không có space giữa các items
+			    * baseline : sẽ dựa theo đường line giữa của items.
+
+	+ align-content được ưu tiên hơn align-items : 
+			    * sắp xếp items hay content khi có nhiều row. sẽ align toàn bộ theo space của parent
+			    * stretch(default) : kéo dãn item cho bằng với height của container.không có space giữa các items
+			    * flex-start :  xếp items trên top của container.không có space giữa các items
+			    * flex-end :   xếp items dưới bottom của container.không có space giữa các items
+			    * space-around : có khoảng trắng giữa các items hay có margin theo chiều top và bottom. space giữa đầu và cuối khá ít.
+			    * space-between : item đầu và cuối sẽ ở sát biên trên và dưới, các items còn lại sẽ có khoảng cách.
+			    * center : các items sẽ bị đẩy ra center nhưng ko có space giữa các items
+- order : trong flex-box container các item mặc định sẽ có order là 0, dùng property order : value; (value có thể có giá trị âm) để xét thứ tự cho items
+- align-self : sắp xếp các items 1 cách riêng lẻ theo chiều dọc.
+	+ flex-end :
+	+ flex-start :
+	+ center :
+- flex-grow : value ; mặc định tất cả items là 0; sẽ thay đổi độ rộng(chiều ngang) của items cho chiếm hết tất cả space có thể khi khác 0.
+- flex-shrink : value; mặc định tất cả items là 1. khi giá trị là 0 sẽ luôn giữ width được set, nếu là 1 như mặc định thì sẽ canh vừa đủ container cho các items.
+- flex-bases : value : xét giá trị basic cho items như width, height.... sẽ là ko thay đổi.
+- Tricks : khi set margin-left: auto thì items sẽ bị đẩy qua phải hết khoảng trống.
+- flex-grow sẽ ưu tiên hơn shrink
+
+- Tạo favicon : vào trang favicon.io để tạo icon 
+- sau đó, ở head ta dùng : link:favicon để chọn favicon

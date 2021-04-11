@@ -1,0 +1,131 @@
+Destructuring assignment is a special syntax that allow us to "unpack" arrays or object into a bunch of variables.
+*** Array Destructuring
+let arr = ["A","B"];
+let [first, second] = arr;  ==> first = "A"; second = "B";
+or
+let [first, second] = "A B".split(" ");
+
+- Copy item into variable 
+- Loại bỏ element bằng cách dùng dấu phẩy 
+
+	let [firstName, , title] = ["Julius", "Caesar", "Consul", "of the Roman Republic"]; 
+
+- Actually, we can use it with any iterable, not only arrays
+	
+	let [a, b, c] = "abc";
+
+- swap trick : [guest, admin] = [admin, guest];
+
+
+**** The Rest "..."
+
+	let [name1, name2, ...rest] = ["Julius", "Caesar", "Consul", "of the Roman Republic"];
+	rest[0] => "Consul"
+
+**** Default Value
+
+	let [name = "Guest", surname = "Anonymous"] = ["Julius"];
+	name => "Julius" ; surname => "Anonymous";
+
+
+	let [name = prompt('name?'), surname = prompt('surname?')] = ["Julius"];
+	alert(name);    // Julius (from array)
+	alert(surname); // whatever prompt gets
+
+**** Object Destructing
+- Basic syntax             : 			let {var1, var2} = {var1:…, var2:…}
+- các properties phải trùng tên
+- Thứ tự thì không quan trọng lắm
+
+	let {height, width, title} = { title: "Menu", height: 200, width: 100 }
+
+- Ta có thể dùng với tên khác như sau ;
+
+	let options = {
+	  title: "Menu",
+	  width: 100,
+	  height: 200
+	};
+	let {width: w, height: h, title} = options;
+	w => 100
+
+- Với những properties không có ta có thể gán default như sau :
+	
+	let options = {
+	  title: "Menu"
+	};
+
+	let {width = 100, height = 200, title = "hello"} = options;
+	title = "Menu";
+
+- Nếu chỉ muốn lấy 1 property thì ta sẽ chỉ dùng 1 property
+
+	let options = {
+	  title: "Menu",
+	  width: 100,
+	  height: 200
+	};
+
+	// only extract title as a variable
+	let { title } = options;
+
+**** The Rest pattern "..."
+
+	let options = {
+	  title: "Menu",
+	  height: 200,
+	  width: 100
+	};
+
+	// title = property named title
+	// rest = object with the rest of properties
+	let {title, ...rest} = options;
+	rest.height => 200
+- Trường hợp nếu không có let thì sẽ có bug như sau :
+	
+	let title, width, height;
+
+	// error in this line
+	{title, width, height} = {title: "Menu", width: 200, height: 100};
+
+- Do {} sẽ tạo thành 1 code block , để JS không xem nó là 1 code block thì ta có thể dùng ().
+
+	let title, width, height;
+
+	// okay now
+	({title, width, height} = {title: "Menu", width: 200, height: 100});
+
+	alert( title ); // Menu
+
+**** Nested destructuring
+- Nếu có nested ta phải khai báo biến đúng định dạng như nested object or array
+
+
+**** Smart function parameters 
+- Ta có thể áp dụng như sau :
+
+	let options = {
+	  title: "My menu",
+	  items: ["Item1", "Item2"]
+	};
+
+	function showMenu({
+	  title = "Untitled",
+	  width: w = 100,  // width goes to w
+	  height: h = 200, // height goes to h
+	  items: [item1, item2] // items first element goes to item1, second to item2
+	}) {
+	  alert( `${title} ${w} ${h}` ); // My Menu 100 200
+	  alert( item1 ); // Item1
+	  alert( item2 ); // Item2
+	}
+
+	showMenu(options);
+
+- Note : nếu không truyền vào tham số ta phải gọi hàm có object là rỗng như sau : showMenu({});
+hoặc như sau :
+		function showMenu({ title = "Menu", width = 100, height = 200 } = {}) {
+		  alert( `${title} ${width} ${height}` );
+		}
+
+		showMenu(); // Menu 100 200
