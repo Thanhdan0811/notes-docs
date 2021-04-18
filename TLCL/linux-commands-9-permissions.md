@@ -74,6 +74,95 @@
 
 * drwxr-x--- : 1 directory. Owner có thể enter directory và create, rename and delete files trong directory. Members of the owner group có thể enter directory nhưng không thể tạo, delete hay rename files.
 
+
 ##9.2.1 : chmod - thay đổi file mode.
+- Để thay đổi mode của 1 file or directory, command chmod sẽ được dùng. Ta cần chú ý là chỉ có file's owner hoặc superuser mới có thể thay đổi mode của file hoặc directory.
+- chmod hỗ trợ 2 cách khác nhau để xác định mode cần thay đổi : octal number hoặc symbolic. Ta sẽ xem xét octal trước.
+- Với octal number ta có thể dùng nó để set các pattern permisstion. vì octal biểu diễn bằng 3 binary digits. ta có map sau :
+
+	+ 0 => 000 => ---
+	+ 1 => 001 => --x
+	+ 2 => 010 => -w-
+	+ 3 => 011 => -wx
+	+ 4 => 100 => r--
+	+ 5 => 101 => r-x
+	+ 6 => 110 => rw-
+	+ 7 => 111 => rwx
+	
+- bằng cách dùng octal digit ta có thể set file mode cho owner, group owner, world.
+
+	+ > foo.txt
+	+ ls -l foo.txt
+	+ chmod 600 foo.txt
+	+ ls -l foo.txt
+	
+
+- 600 sẽ set permissions của owner là read và write trong khi remove tất cả permission của group owner và world.
+
+- chmod còn hỗ trợ symbolic notation để xác định mode. Symbolic notation được chia thành 3 phần :
+
+	+ ai sẽ chịu ảnh hưởng bởi sự thay đổi.
+	+ operation nào sẽ được thực hiện
+	+ permisstion sẽ được set là gì.
+
+- để xác định ai bị ảnh hưởng, 1 tập hợp các characters "u", "g", "o" và "a" được sử dụng. như sau :
+
+	+ u : hiểu là "user" nhưng có nghĩa là file or directory owner.
+	+ g : group owner
+	+ o : hiểu là "others" nhưng có nghĩa là world.
+	+ a : hiểu là "all", là tổng hợp "u", "g", "o".
+	
+- Nếu không có character thì mặc định sẽ là "all", "+" mô tả 1 permission được thêm vào, "-" mô tả 1 permission bị bỏ đi, "=" mô tả chỉ có specified permission là được applied và tất cả những cái khác sẽ bị loại bỏ.
+- Permissions được xác định bằng : "r", "w", "x" 
+- Ví dụ :
+
+	+ u+x : add execute permission cho owner
+	+ u-x : loại bỏ execute permisstion từ owner.
+	+ +x  : add execute permission cho owner, group và world. tương đương với a+x
+	+ o-rw : xóa read and write permission khỏi bất cứ ai thuộc owner và group owner.
+	+ go=rw : set group owner và bất cứ ai thuộc owner có quyền read và write, nếu 1 trong 2 group owner hoặc workd đã có execute permission, nó sẽ bị loại bỏ.
+	+ u+x, go=rx : add execute permission cho owner và set permisstion cho group và others để read và execute. 
+	
+
+##9.2.2 : umask - Set Default Permissions.
+- command umask điều khiển permissions default của file khi nó được khởi tạo. Sử dụng octal notation để express 1 mask bits sẽ bị loại bỏ khỏi file mode.
+
+	+ umask => 0002
+	+ > foo.txt 
+	+ ls -l foo.txt
+	=> -rw-rw-r-- 1 me me .....
+	
+- 0002 hoặc 0022 là giá trị của mask ở dạng octal. Ta có thể thấy cả owner và group đều có read và write permission, trong khi everyone else chỉ có read permisstion. lý do là vì mask.
+
+	+ rm foo.txt
+	+ umask 0000
+	+ > foo.txt
+	+ ls -l foo.txt
+	=> -rw-rw-rw- 1 me me ....
+	
+- Khi ta set mask là 0000 (tắt nó), ta thấy file bây giờ là world writable. Ta hiểu như sau :
+
+	+ original file mode : --- rw- rw- rw-
+	+ mask : 000 000 000 010
+	+ result : --- rw- rw- r--
+
+- Ta thấy ở đâu xuất hiện 1 thì permission ở đó sẽ bị loại bỏ.
+- Ta có thể hiểu số 1 xuất hiện ở đâu thì attribute ở đó sẽ bị unset 
+
+	+ original file mode : --- rw- rw- rw-
+	+ mask : 000 000 010 010
+	+ result : --- rw- r-- r--
+	
+- Thông thường ta sẽ ko thay đổi umask trừ các trường hợp bảo mật cao.
 - 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
