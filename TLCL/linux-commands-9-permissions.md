@@ -154,8 +154,24 @@
 	+ result : --- rw- r-- r--
 	
 - Thông thường ta sẽ ko thay đổi umask trừ các trường hợp bảo mật cao.
-- 
+
+##9.2.3 : Một số permission đặc biệt.
+
+- Thường thì ta sẽ thấy octal permission mask dưới dạng 3 digit number. Nhưng nó sẽ đúng hơn khi sử dụng dưới dạng 4 digits. Vì ngoài read, write và execute permission, còn có 1 số khác, ít dùng.
+- Một trong số đó là setuid bit (octal 4000). khi ta áp dụng với executable file, nó set ....
+- Cái thứ hai less-used là setgid bit (octal 2000), 
+- Cái thứ 3 less-used là sticky bit (octal 1000), 
+
+
+## 9.2.4 : Thay đổi Identities
+
+- Ta có thể thay đổi thành 1 user khác để thực hiện 1 số quyền mà user đó có. Có 3 cách để thay đổi.
+
+	+ Log out và đăng nhập lại.
+	+ dùng su command.
+	+ dùng sudo command. 
 	
+- 
 	
 	
 	
