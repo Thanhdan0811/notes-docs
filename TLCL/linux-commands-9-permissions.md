@@ -171,12 +171,71 @@
 	+ dùng su command.
 	+ dùng sudo command. 
 	
-- 
+- su command cho phép ta giả lập identity của another user và có thể start 1 new shell session với user'ID hoặc thực hiện 1 single command dưới tư cách là user đó.
+- sudo command cho phép 1 administrator được set up 1 configuration file được gọi là /etc/sudoers và define 1 số commands cụ thể mà 1 particular user bị từ chối khi thực thi dưới 1 identity giả lập.
+
+###9.2.4.1 : su - Run a shell with substitute User and Group IDs.
+- su command được dùng để bắt đầu 1 shell như là 1 another user. syntax :
+
+	+ su [-[l]] [user]
+	
+- nếu -l option được thêm vào, resulting shell session là 1 login shell cho specified user. Điều này có nghĩa là user's enviroment được load và working directory bị thay đổi đến user's home directory. 
+- Nếu user không được đề cập, superuser sẽ được hiểu ngầm. 
+__NOTE__ -l option có thể được viết gọn lại thành -.
+
+	+ su - => start a shell cho superuser.
+	
+- Sau khi kết thúc ta có thể enter exit để thoát khỏi shell.
+- Ta có thể thực hiện như sau :
+
+	+ su -c 'command'
+	+ su -c 'ls -l /root/*'
+	
+- Cho phép ta chỉ thực hiện 1 command mà không cần phải mở shell. lưu ý phải để command bên trong quotes để không có expansion ở shell hiện tại mà ở shell của user.
+
+	
+###9.2.4.2 : sudo - Execute a Command as Another User.
+- The adminnistrator có thể configure sudo cho phép 1 ordinary user được execute commands như là 1 user khác (thường là superuser) 1 cách có kiểm soát. Cụ thể là 1 user có thể bị giới hạn với 1 hoặc 1 số specific commands. 
+- 1 điểm quan trọng khác nữa là sudo sẽ không yêu cầu password của superuser mà sẽ yêu cầu user's own password. 
+- Khác với su, sudo không start mới 1 shell, hoặc load another user's enviroment. do đó commands không cần phải quoted. Nhưng sự khác biệt này có thể bị overriden bằng cách sử dụng option như -i , xem thêm ở man page.
+
+## 9.2.5 : chown - Change File Owner and Group.
+- chown thường được dùng để thay đổi owner và group owner của file hoặc directory. Superuser privileges là bắt buộc khi use this command. Syntax :
+
+	chown [owner][:[group]] file...
+	
+- chown có thể thay đổi file owner hoặc file group owner tùy thuộc vào first argument của command. Ví dụ :
+
+	+ bob => thay đổi ownership của file từ current owner đến user bob
+	+ bob:users => thay đổi ownership của file từ its current owner đến user bob và thay đổi file group owner thành group users.
+	+ :admins => thay đổi group owner thành group admins. file owner không thay đổi.
+	+ bob: => thay đổi file owner thành bob và group owner thành the login group của user bob.
+	
+- Ví dụ, ta có 2 user là janet là ng có quyền superuser và tony thì ko có. Janet muốn copy file từ home directory của cô đến hom directory của user tony. Vì Janet muốn tony có thể edit file, Janet sẽ thay đổi ownership của bản copied từ janet thành tony.
+
+	+ sudo cp myfile.txt ~tony ; từ janet
+	+ sudo ls -l ~tony/myfile.txt
+	=> -rw-r--r-- 1 root root root 2018-03-20 14:30 /home/tony/myfile.txt
+	+ sudo chown tony: ~tony/myfile.txt
+	+ sudo ls -l ~tony/myfile.txt
+	=>-rw-r--r-- 1 tony tony tony 2018-03-20 14:30 /home/tony/myfile.txt
 	
 	
+- Ở đây, Janet copy file từ directory của cố ấy đến home directory của user tony. Sau đó janet thay đổi ownership của file từ root thành tony đồng thời cũng thay đổi quyền group ownership của file thành login group của tony.
+## 9.2.6 : chgrp - Change Group Ownership
+- Ở Unix cữ, chown command chỉ thay đổi file ownership, không có group. Do đó 1 command riêng được dùng là chgrp. nó hoạt động giống như chown nhưng bị limited nhiều thứ.
+
+- Xem thêm exercising .
+
+## 9.3 : Changing Your Password.
+- Để thay đổi password ta dùng command passwd. 
+
+	+ passwd [user]
 	
-	
-	
+- Để thay đổi password của bạn, ta chỉ cần enter passwd command, ta sẽ được nhắc điền password cũ và new .
+- Nếu ta có superuser privileges, ta có thể xác định cụ thể username là argument cho passwd command để set password cho another user.
+- Xem passwd man page để biết thêm về superuser privileges.
+ 
 	
 	
 	
