@@ -1,5 +1,5 @@
 ## 7.1 Expansion 
-- Mỗi khi ta gõ 1 command và press enter key, bash thực hiện 1 số thay thế trên text trước khi nó thực hiện command. Ta đã xem qua 1 số trường hợp của 1 simple character như *, * có thể mang nhiều ý nghĩa với shell.
+- Mỗi khi ta gõ 1 command và press enter key, bash thực hiện 1 số thay thế trên text trước khi nó thực hiện command. Ta đã xem qua 1 số trường hợp của 1 simple character như *. * có thể mang nhiều ý nghĩa với shell.
 - Quá trình thực hiện việc này gọi là expansion. Với expansion ta enter vào something và nó sẽ expansion thành somthing else trước khi shell tác động lên nó.
 - Ta sẽ xem xét lệnh echo, echo là 1 shell builtin thực hiện task rất đơn giản đó là print text argument ra standard output.
 
@@ -13,7 +13,7 @@
 	=> Desktop Documents ls-output.txt Music Pictutes ....
 
 
-- Tại sao echo lại không in ra * ??? Ta đều hiểu wildcards * sẽ match mọi characters nhưng ta lại không thấy được cách shell thực hiện nó. Ta có thể hiểu đơn giản là shell expands * thành 1 cái gì đó khác(trong trường hợp này là names của các files trong directory hiện tại) trước khi echo thực thi.
+- Tại sao echo lại không in ra * ??? Ta đều hiểu wildcards * sẽ match bất cứ characters nhưng ta lại không thấy được cách shell thực hiện nó. Ta có thể hiểu đơn giản là shell expands * thành 1 cái gì đó khác(trong trường hợp này là names của các files trong directory hiện tại) trước khi echo thực thi.
 - Khi enter key pressed, shell sẽ tự động expands bất cứ characters đạt điều kiện trong command line trước khi command được thực hiện. vì vậy echo sẽ không bao giờ thấy *, mà nó chỉ thấy expands result. 
 
 
