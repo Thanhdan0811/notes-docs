@@ -79,4 +79,67 @@
     + Uint8Array, Uint16Array, Uint32Array - cho integer number là 8,16,32 bits.
     + Uint8ClampedArray - 8 bit integers. "clamp"(kẹp) them on assignment
     + Int8Array, Int16Array, Int32Array - cho singed integer numbers (có thể số âm)
-    + Float32Array, Float64Array - 
+    + Float32Array, Float64Array - cho singed floating-point number 32bit và 64 bits.
+
+- NOTE : không có value như int or int8 trong JS, Int8Array không phải là array của các value đơn lẻ này mà là view của ArrayBuffer.
+
+# Our of bounds behavior
+- Nếu ta viết 1 số lớn hơn khoảng vào typed array, sẽ ko có lỗi nhưng extra bít sẽ bị cắt mất.
+- Ví dụ nếu ta store 256 vào Uint8Array , 256 là 100000000 (9 bits), nhưng Uint8Array chỉ là từ 0 đến 255. 
+- Với số lớn hơn, thì sẽ chỉ có 8 bit bên phải được lưu. phần còn lại sẽ bị cắt mất.
+
+    + 100000000 = 00000000 => 0
+    + 100000001 = 00000001 => 1
+
+- Nói cách khác là modulo 2^8 sẽ được lưu.
+
+    + let uint8array = new Uint8Array(16);
+
+    + let num = 256;
+    + alert(num.toString(2)); // 100000000 (binary representation)
+
+    + uint8array[0] = 256;
+    + uint8array[1] = 257;
+
+    + alert(uint8array[0]); // 0
+    + alert(uint8array[1]); // 1
+
+- Uint8ClampedArray là trường hợp đặc biệt, lưu 255 cho bất cứ giá trị nào lớn hơn 255, và 0 cho số âm, dùng trong xử lý ảnh.
+
+
+# Typed Array methods
+- TypedArray ta có thể dùng với các methods của Array như map, slice, find, reduce etc.
+- Ngoại trừ splice do typed là view on buffer, chúng fixed ko thể xóa, chỉ có thể assign zeros. và ko có concat method.
+- Ta sẽ có thêm 2 methods là :
+    + arr.set(fromArr, [offset]) : copies tất cả elements từ fromArr đến arr. bắt đầu tại offset position. 0 là mặc định.
+    + arr.subarray([begin, end]) : tạo 1 view mới cùng type từ begin đến end. giống slice nhưng ở đây ko copy. chỉ tạo mới view và thao tác trên data được nhận.
+
+
+# DataView
+- Là 1 special "untyped" view over ArrayBuffer. Nó cho phép access data ở offset bất kỳ với format bất kỳ.
+- Với typed array, constructor ám chỉ format là  gì, i number là arr[i].
+- Với DataView, ta access data với method như .getUint8(i) hoặc .getUint16(i). Ta chọn format và gọi method.
+- Syntax :
+
+    + new DataView(buffer, [byteOffset], [byteLength]);
+    + buffer : ArrayBuffer bên dưới, DataView sẽ ko tạo buffer cho nó.
+    + byteOffset : vị trí byte bắt đầu của view , mặc định là 0.
+    + byteLength : byte length của view, mặc định là đến cuối của buffer.
+
+- Ví dụ :
+
+    + // binary array of 4 bytes, all have the maximal value 255
+    + let buffer = new Uint8Array([255, 255, 255, 255]).buffer;
+
+    + let dataView = new DataView(buffer);
+
+    + // get 8-bit number at offset 0
+    + alert( dataView.getUint8(0) ); // 255
+
+    + // now get 16-bit number at offset 0, it consists of 2 bytes, together  + interpreted as 65535
+    + alert( dataView.getUint16(0) ); // 65535 (biggest 16-bit unsigned int)
+
+    + // get 32-bit number at offset 0
+    + alert( dataView.getUint32(0) ); // 4294967295 (biggest 32-bit unsigned int)
+
+    + dataView.setUint32(0, 0); // set 4-byte number to zero, thus setting all bytes to 0
