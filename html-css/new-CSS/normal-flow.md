@@ -1,0 +1,3 @@
+- Về mặc định, block level element có content sẽ fill vào inline space của parent element chứa nó,
+- Sau đó, nó sẽ tăng theo chiều block element dimension để chứa content của nó.
+- Đối với inline level element thì chỉ là size của content đó.

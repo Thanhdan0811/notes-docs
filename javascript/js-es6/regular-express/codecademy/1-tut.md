@@ -1,0 +1,2 @@
+- "str1|str2" : nếu string có 1 trong str1 hoặc str2 đều ok.
+- 

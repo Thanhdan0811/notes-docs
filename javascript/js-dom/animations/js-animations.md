@@ -1,0 +1,1 @@
+- js animation có thể handle những yếu tố mà css không thể.

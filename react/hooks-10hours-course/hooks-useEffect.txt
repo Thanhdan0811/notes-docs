@@ -17,7 +17,7 @@
 
 - Ta sẽ phải dùng điều kiện bên trong useEffect.
 - Ta có thể dùng bao nhiêu useEffect tùy thích.
-- callback function không thể là async function.
+- callback function của useEffect không thể là async function.
 ********** Cleanup function 
 - Khi dùng useEffect để set addEventListner cho 1 element thì mỗi lần setValue thay đổi nó sẽ gọi lại hàm useEffect đồng thời gán lại addEventListner do đó sẽ tạo ra hàng loạt sự kiện event trên element.
 - Lúc này ta sẽ phải dùng cleanup function.

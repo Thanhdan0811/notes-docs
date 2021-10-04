@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Convert decimal to binary</h1>
+    <input type="text" id="input-decimal"> <button id="convert-decimal">convert</button>
+
+
+    <script>
+        // Convert decimal to binary
+        // c1
+        function convertDecimalToBinary(num) {
+            if(num < 2) {
+                return num
+            }
+            let bi = num % 2;
+            bi = convertDecimalToBinary((num - bi) / 2) + "" + bi;
+            return bi;
+        }
+        // c2 : chưa hiểu.
+        function base10ToString(n) {
+            var binaryString = "";
+
+            function base10ToStringHelper(n) {
+                if (n < 2) {
+                    binaryString += n;
+                    return;
+                } else {
+                    base10ToStringHelper(Math.floor(n / 2));
+                    base10ToStringHelper(n % 2);
+                }
+            }
+            base10ToStringHelper(n);
+     
+            return binaryString;
+         }
+        document.querySelector("#convert-decimal").onclick = function() {
+            let value = +document.querySelector("#input-decimal").value;
+            if(typeof value !== "number" || value !== value) return;
+            document.querySelector("#input-decimal").value = convertDecimalToBinary(value);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,3 @@
+- action là 1 js object, có type và payload.
+- action creator là 1 function tạo và trả về action object.
+- reducer là 1 function nhận 2 parameters là state hiện tại và action object. và trả về state mới.
