@@ -1,0 +1,5 @@
+- DOM là Document Object Model là 1 abstraction của 1 structured text.
+- Với web dev thì đây là HTML code Và DOM được gọi là HTML DOM.
+- HTML element thì sẽ là nodes của DOM.
+- Do đó, HTML là text , DOM là 1 in-memory biểu diễn text này.
+- 
