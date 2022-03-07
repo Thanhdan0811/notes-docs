@@ -1,0 +1,4 @@
+- Ta dùng $router để làm gì đó
+- Ta dùng $route để lấy thông tin về route hiện tại.
+- Ví dụ : this.$router.go(-1);  số âm đi về 1 trang.
+- this.$router.push({name: 'Home'}) : redirect

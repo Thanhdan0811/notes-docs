@@ -1,0 +1,298 @@
+- Hàm thông thường chỉ có thể trả về 1 value hoặc không trả về gì cả.
+- Generator có thể trả về ("yield") nhiều values.
+
+# ======= GENERATOR FUNCTIONS
+
+- Để tạo generator function ta cần 1 syntax đặc biệt : function\*
+- Syntax này được gọi là generator function.
+- Ví dụ (1):
+
+  + function\* generateSequence() {
+  +       yield 1;
+  +       yield 2;
+  +       return 3;
+  + }
+
+- Generator function khi được gọi nó sẽ không chạy code của nó, thay vào đó nó sẽ trả về 1 object đặc biệt được gọi là _generator object_
+- Generator object được dùng để quản lý việc thực thi.
+- Ví dụ :
+
+  + // "generator function" sẽ tạo ra 1 "generator object"
+  + let generator = generatorSequence();
+  + alert(generator); [object Generator]
+
+- Đoạn code (1) vẫn sẽ chưa được thực thi.
+- method chính của generator là next(), Khi được gọi nó sẽ thực thi hàm cho đến khi nó gặp "yield value" gần nhất.
+- Nếu value bị bỏ trống thì sẽ là undefined.
+- Sau đó việc thực thi function sẽ dừng lại, và value của yield sẽ được trả ra ngoài code.
+- Kết quả trả về của method next() sẽ luôn là object với 2 properties :
+
+  + value: value của yield.
+  + done : true => nếu function code đã kết thúc tức là hoàn thành thực thi toàn bộ hàm, trả về false nếu chưa.
+
+- Tiếp tục ví dụ trên :
+
+  + let one = generator.next();
+  + alert(JSON.stringify(one)); // {value: 1, done: false}
+
+- Lúc này, ta mới chỉ nhận được value đầu tiên , và việc thực thi hàm đang ở line thứ 2, tức là "yield 1;"
+- Ta sẽ gọi generator.next() lần nữa :
+
+  + let two = generator.next();
+  + alert(JSON.stringify(two)); // {value: 2, done: false}
+
+- Việc thực thi hàm đang ở line thứ 2, tức là "yield 2;"
+- Ta sẽ gọi generator.next() lần nữa :
+
+  + let three = generator.next();
+  + alert(JSON.stringify(three)); // {value: 3, done: true}
+
+- Việc thực thi hàm đã hoàn thành, nếu ta tiếp tục gọi next() thì hàm sẽ chỉ trả về _{done: true}_ _NOTE_ : function* và function *name là đều như nhau nhưng nên dùng cách 1.
+
+# ======= GENERATORS LÀ ITERABLE.
+
+- Dựa vào cách hoạt động như trên ta có thể thấy generators là iterable(Object có thể lặp với for...of).
+- Ví dụ :
+
+  + function\* generateSequence() {
+  +     yield 1;
+  +     yield 2;
+  +     return 3;
+  + }
+  + let generator = generateSequence();
+  + for(let value of generator) {
+  +     alert(value); // 1, sau đó là 2
+  + }
+
+_NOTE_ việc chạy for...of ở trên sẽ chỉ alert ra 1, 2 nhưng sẽ không có value 3.
+
+- Đây là do for...of khi lặp sẽ bỏ qua value cuối cùng khi _done: true_
+- Để trả về tất cả, ta sẽ khai báo tất cả là yield.
+- Ví dụ được sửa lại :
+
+  + function\* generateSequence() {
+  +     yield 1;
+  +     yield 2;
+  +     yield 3;
+  + }
+  +
+  + let generator = generateSequence();
+  +
+  + for(let value of generator) {
+  +     alert(value); // 1, then 2, then 3
+  + }\
+
+- Vì là iterable, ta có thể call các chức năng liên quan như sau :
+
+  + function\* generateSequence() {
+  +       yield 1;
+  +       yield 2;
+  +       yield 3;
+  + }
+  + let sequence = [0, ...generateSequence()];
+  + alert(sequence); // 0, 1, 2, 3
+
+# ====== Sử dụng generators cho iterables
+
+- Ở chương Iterables ta đã tạo ra 1 iterable _range_ object trả về value from..to
+- Code như sau :
+
+  + let range = {
+  + from: 1,
+  + to: 5,
+  +
+  + // for..of range calls this method once in the very beginning
+  + [Symbol.iterator]() {
+  +     // ...it returns the iterator object:
+  +     // onward, for..of works only with that object, asking it for next values
+  +     return {
+  +       current: this.from,
+  +       last: this.to,
+  +
+  +       // next() is called on each iteration by the for..of loop
+  +       next() {
+  +         // it should return the value as an object {done:.., value :...}
+  +         if (this.current <= this.last) {
+  +           return { done: false, value: this.current++ };
+  +         } else {
+  +           return { done: true };
+  +         }
+  +       }
+  +     };
+  + }
+  + };
+  +
+  + // iteration over range returns numbers from range.from to range.to
+  + alert([...range]); // 1,2,3,4,5
+
+- Với generator function ta có thể viết gọn lại như sau :
+
+  + let range = {
+  + from: 1,
+  + to: 5,
+  +
+  + _[Symbol.iterator]() { // a shorthand for [Symbol.iterator]: function_()
+  +     for(let value = this.from; value <= this.to; value++) {
+  +       yield value;
+  +     }
+  + }
+  + };
+  +
+  + alert( [...range] ); // 1,2,3,4,5
+
+# ======= GENERATOR COMPOSITION.
+
+- Generator composition là 1 tính năng đặc biệt của generators cho phép "nhúng" trong suốt các generators vào nhau.
+- Ví dụ, ta có hàm tạo ra 1 chuỗi các số :
+
+  + function\* generateSequence(start, end) {
+  +     for(let i = start; i <= end; i++) yield i;
+  + }
+
+- Bây giờ ta mún dùng lại hàm trên để thực hiện các yêu cầu sau :
+
+  + đầu tiên, Số từ 0 đến 9 khi character code là 48 đến 57.
+  + Sau đó, là các ký tự viết hoa từ A đến Z, code từ 65 đến 90.
+  + Cuối cùng là các ký tự chữ thường a đến z, code từ 97 đến 122.
+
+- Để kết hợp các generator function lại với nhau ta sẽ dùng 1 syntax đặc biệt : _yield\*_
+- Ví dụ như sau :
+
+  + function\* generateSequence(start, end) {
+  +     for (let i = start; i <= end; i++) yield i;
+  + }
+  +
+  + function\* generatePasswordCodes() {
+  +
+  +     // 0..9
+  +     yield* generateSequence(48, 57);
+  +
+  +     // A..Z
+  +     yield* generateSequence(65, 90);
+  +
+  +     // a..z
+  +     yield* generateSequence(97, 122);
+  +
+  + }
+  +
+  + let str = '';
+  +
+  + for(let code of generatePasswordCodes()) {
+  +     str += String.fromCharCode(code);
+  + }
+  +
+  + alert(str); // 0..9A..Za..z => 0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz
+
+- yield\* sẽ lặp qua generator gen và làm trong suốt các yield khi ra ngoài.
+- Ta có thể xem như sau :
+
+  + function\* generateAlphaNum() {
+  +   // yield\* generateSequence(48, 57);
+  +   for (let i = 48; i <= 57; i++) yield i;
+  +
+  +   // yield\* generateSequence(65, 90);
+  +   for (let i = 65; i <= 90; i++) yield i;
+  +
+  +   // yield\* generateSequence(97, 122);
+  +   for (let i = 97; i <= 122; i++) yield i;
+  + }
+
+- Generator composition là cách để chèn 1 flow của 1 generator vào 1 cái khác, nó sẽ không cần dùng thêm vùng nhớ để lưu trữ.
+
+# ======== "yield" là two-way street.
+
+- Có nghĩa là yield không chỉ trả về value ra bên ngoài, mà còn có thể pass value vào trong generator.
+- Để thực hiện được ta sẽ dùng : _generator.next(arg)_
+
+  + function* gen() {
+  +   // Pass a question to the outer code and wait for an answer
+  +   let result = yield "2 + 2 = ?"; // (*)
+  + 
+  +   alert(result);
+  + }
+  + 
+  + let generator = gen();
+  + 
+  + let question = generator.next().value; // <-- yield returns the value
+  + 
+  + generator.next(4); // --> pass the result into the generator
+
+- Ở lần đầu gọi next(), thì thực thi hàm đang ở line "let result", lúc này yield trả về string "2 + 2 = ?"
+- Ở lần gọi : generator.next(4); thì yield sẽ nhận 4 làm value truyền vào và gán cho result.
+- Từ đây có thể thấy, generator có thể chuyển đổi result bằng cách truyền value trong next/yield.
+- Chú ý : ở lần gọi next đầu tiên thì passed value sẽ bị bỏ qua.
+- 1 ví dụ rõ hơn : 
+
+  + function* gen() {
+  +   let ask1 = yield "2 + 2 = ?";
+  + 
+  +   alert(ask1); // 4
+  + 
+  +   let ask2 = yield "3 * 3 = ?"
+  + 
+  +   alert(ask2); // 9
+  + }
+  + 
+  + let generator = gen();
+  + 
+  + alert( generator.next().value ); // "2 + 2 = ?"
+  + 
+  + alert( generator.next(4).value ); // "3 * 3 = ?"
+  + 
+  + alert( generator.next(9).done ); // true
+
+# ====== generator.throw
+
+- Để pass 1 error vào yield ta nên dùng generator.throw(err), lúc này error được ném ra ở line của yield.
+- Ví dụ :
+
+  + function* gen() {
+  +   try {
+  +     let result = yield "2 + 2 = ?"; // (1)
+  + 
+  +     alert("The execution does not reach here, because the exception is thrown above");
+  +   } catch(e) {
+  +     alert(e); // shows the error
+  +   }
+  + }
+  + 
+  + let generator = gen();
+  + 
+  + let question = generator.next().value;
+  + 
+  + generator.throw(new Error("The answer is not found in my database")); // (2)
+
+- Nếu ko có try catch thì nó sẽ bay ra ngoài code.
+- Hoặc có thể viết như sau :
+
+  + function* generate() {
+  +   let result = yield "2 + 2 = ?"; // Error in this line
+  + }
+  + 
+  + let generator = generate();
+  + 
+  + let question = generator.next().value;
+  + 
+  + try {
+  +   generator.throw(new Error("The answer is not found in my database"));
+  + } catch(e) {
+  +   alert(e); // shows the error
+  + }
+
+# ====== generator.return
+- generator.return(value) sẽ kết thúc việc thực thi generator và trả về value được truyền vào.
+- Ví dụ :
+
+  + function* gen() {
+  +   yield 1;
+  +   yield 2;
+  +   yield 3;
+  + }
+  + 
+  + const g = gen();
+  + 
+  + g.next();        // { value: 1, done: false }
+  + g.return('foo'); // { value: "foo", done: true }
+  + g.next();        // { value: undefined, done: true }
+
+- Nếu ta dùng generator.return() 1 lần nữa thì nó sẽ trả về value đó lần nữa.

@@ -1,0 +1,2 @@
+- JSX elements can be either HTML-like, or component instances
+- Để gọi render của 1 component ta cầ pass nó vào ReactDOM.render();

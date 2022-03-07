@@ -28,6 +28,7 @@
 - Khi React đã biết virtual DOM object  nào thay đổi thì nó sẽ chỉ update objects đó trong real DOM.
 
 => Tóm lại : 
+    + JSX được render, sau đó
     + Toàn bộ virtual DOM sẽ được updates.
     + Virtual DOM sẽ được so sánh với bản snapshot trước đó và tìm ra cái nào thay đổi. 
     + Sau đó sẽ chỉ update nó ở real DOM.
@@ -39,3 +40,19 @@
 
 # ========== Variables in JSX
 - Khi nhúng js vào jsx , thì js đó là 1 phần của cùng environment như js trong file.
+
+# ========== && 
+- false thì trả về giá trị đó và dừng. true thì trả về cuối.
+
+# ========== React.createElement
+- const h1 = <h1>Hello world</h1>;
+- đoạn code trên có thể được viết lại như sau :
+
+>   const h1 = React.createElement(
+>     "h1",
+>     null,
+>     "Hello, world"
+>   );
+
+- Khi jsx được compiled thì compiler sẽ chuyển đổi jsx element thành method React.createElement()
+- Mỗi JSX element sẽ bí mật gọi React.createElement().

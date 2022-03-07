@@ -1,0 +1,2 @@
+- npm init -y
+- npm i name -D hay --save-dev
