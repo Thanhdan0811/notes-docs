@@ -1,0 +1,1 @@
+- Tạo component  ko có test : ng g c recipes --skip-tests true
