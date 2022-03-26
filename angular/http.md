@@ -19,4 +19,33 @@
 +           });
 +   }
 
-- 
+- Để handling error ta có thể làm như sau : Cách 1 :
+
++    this.postService.fetchPosts().subscribe((posts) => {
++      this.isFetching = false;
++      this.loadedPosts = posts;
++    }, (error) => {
++      this.error = error.message;
++      console.log(error);
++    });
+
+- Cách 2 : Dùng Subject
+
++        error = new Subject<string>();
++
++        this.http
++            .post<{ name: string }>(
++                'https://ng-guild-http-default-rtdb.firebaseio.com/posts.json',
++                postData
++            )
++            .subscribe({
++                next: (resData) => {
++                    console.log(resData);
++                }, 
++                error: error => {
++                    this.error.next(error.message);
++                }
++            });
+
+- Cách 3 dùng catchError từ rxjs
+
